@@ -1,0 +1,24 @@
+{
+  "screens": {
+    "home": {
+      "refreshInterval": 15000,
+      "widgetConfigs": [
+        {
+          "id": "core/relevant",
+          "componentName": "RelevantWidget",
+          "settings": {}
+        },
+        {
+          "id": "core/calendar",
+          "componentName": "CalendarWidget",
+          "settings": {}
+        },
+        {
+          "id": "core/photoOfTheDay",
+          "componentName": "PhotoOfTheDayWidget",
+          "settings": {}
+        }
+      ]
+    }
+  }
+}
