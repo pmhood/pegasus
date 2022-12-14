@@ -8,10 +8,13 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src/client', import.meta.url))
     }
   },
   server: {
+    watch: {
+      ignored: ['**/dist/**', '**/src/server/**']
+    },
     host: '0.0.0.0',
     proxy: {
       '^/api/.*': {
