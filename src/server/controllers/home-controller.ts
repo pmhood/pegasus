@@ -7,13 +7,11 @@ import {
   PhotoOfTheDayWidgetData,
   RelevantWidgetData
 } from '../dto/home-response';
-import { CalendarService } from '../services/calendar/calendar-service';
-import { PhotosService } from '../services/photos/photos-service';
+import { PhotosService } from '../plugins/core/photos/photos-service';
 import { randomElement } from '../utils/array-utils';
 
 export class HomeController {
   private photosService = new PhotosService();
-  private calendarService = new CalendarService();
   constructor(private readonly configService: ConfigService) {}
 
   public async getData(): Promise<HomeScreenResponse> {
@@ -44,12 +42,12 @@ export class HomeController {
           widgets.push(w);
           break;
         case WidgetId.Calendar:
-          const events = await this.calendarService.getCalendarEvents();
-          widgets.push({
-            componentName: widgetConfig.componentName,
-            id: widgetConfig.id,
-            data: { events } as CalendarWidgetData
-          });
+          // const events = await this.calendarService.getCalendarEvents();
+          // widgets.push({
+          //   componentName: widgetConfig.componentName,
+          //   id: widgetConfig.id,
+          //   data: { events } as CalendarWidgetData
+          // });
           break;
         case WidgetId.Relevant:
           widgets.push({

@@ -1,31 +1,50 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-// import * as unsplashJs from 'unsplash-js';
-import express, { Express, Request, Response } from 'express';
-import { Random } from 'unsplash-js/dist/methods/photos/types';
+import * as express from 'express';
+import { Application, Express, Request, Response } from 'express';
+import { Config } from './config/config';
+import { ConfigService } from './config/config-service';
+import { PluginLocator } from './plugins/plugin-locator';
 import { ScreensRoutes } from './resources/screens-routes';
-import { CalendarService } from './services/calendar/calendar-service';
-import * as axios from 'axios';
-import * as ical from 'node-ical';
 
-const app: Express = express();
-const port = 3000;
+const PORT = 3000;
 
-app.use(express.static('../src'));
+class Server {
+  private app: Application = express();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server3');
-});
+  private createPlugins(config: Config) {
+    for (const [key, value] of Object.entries(config.plugins)) {
+      PluginLocator.add(key, value);
+    }
+  }
 
-app.get('/healthcheck', (req: Request, res: Response) => {
-  res.send({
-    status: 0
-  });
-});
+  public async setup() {
+    const configService = new ConfigService();
+    const config = await configService.getConfig();
+    if (config) {
+      this.createPlugins(config);
+    }
 
-app.get('/ical', async (req: Request, res: Response) => {
-  const d = `BEGIN:VCALENDAR
+    this.app.use(express.static('../src'));
+
+    this.app.get('/', (req: express.Request, res: express.Response) => {
+      res.send('Express + TypeScript Server3');
+    });
+
+    this.app.get(
+      '/healthcheck',
+      (req: express.Request, res: express.Response) => {
+        res.send({
+          status: 0
+        });
+      }
+    );
+
+    this.app.get(
+      '/ical',
+      async (req: express.Request, res: express.Response) => {
+        const d = `BEGIN:VCALENDAR
 PRODID:-//Google Inc//Google Calendar 70.9054//EN
 VERSION:2.0
 CALSCALE:GREGORIAN
@@ -166,86 +185,23 @@ SUMMARY:Do something
 TRANSP:OPAQUE
 END:VEVENT
 END:VCALENDAR`;
-  res.setHeader('content-type', 'text/calendar');
-  res.send(d);
+        res.setHeader('content-type', 'text/calendar');
+        res.send(d);
+      }
+    );
 
-  // const calResponse = await ical.async.fromURL(
-  //   'https://calendar.google.com/calendar/ical/db26bfdd34e830ef0e8dbafdd53e079bcf527e238410728924656d2eed2c981b%40group.calendar.google.com/public/basic.ics',
-  //   null,
-  //   (err, ics) => {
-  //     console.log(ics);
-  //   }
-  // );
+    ScreensRoutes.addRoutes(this.app, config);
+  }
 
-  // // console.log(calResponse);
-  // const url =
-  //   'https://calendar.google.com/calendar/ical/db26bfdd34e830ef0e8dbafdd53e079bcf527e238410728924656d2eed2c981b%40group.calendar.google.com/public/basic.ics';
-  // const { data } = await axios.default.get(url, {
-  //   responseType: 'stream'
-  // });
+  public listen() {
+    this.app.listen(PORT, () => {
+      console.log(
+        `⚡️[server]: Server is running at https://localhost:${PORT}`
+      );
+    });
+  }
+}
 
-  // data.pipe(res);
-
-  // const response = await axios.default.get(
-  //   'https://calendar.google.com/calendar/ical/db26bfdd34e830ef0e8dbafdd53e079bcf527e238410728924656d2eed2c981b%40group.calendar.google.com/public/basic.ics',
-  //   {}
-  // );
-  // console.log(response);
-  // console.log(typeof response.data);
-  // // console.log(response.data);
-  // res.setHeader('content-type', 'text/calendar');
-  // res.send(response.data);
-});
-
-ScreensRoutes.addRoutes(app);
-
-// app.get('/photos', async (req: Request, res: Response) => {
-//   const result = await unsplash.search.getPhotos({
-//     query: 'cat',
-//     page: 1,
-//     perPage: 10,
-//     color: 'green',
-//     orientation: 'portrait'
-//   });
-
-//   // response.response?.results[0].
-
-//   // console.log(response);
-
-//   res.send(result.response);
-// });
-
-// app.get('/photos/random', async (req: Request, res: Response) => {
-//   try {
-//     const result = await unsplash.photos.getRandom({
-//       count: 1,
-//       contentFilter: 'high',
-//       // topicIds: ['nature'],
-//       // query: 'weather',
-//       collectionIds: ['162468']
-//       // orientation: 'landscape'
-//     });
-//     console.log(JSON.stringify(result));
-//     if (result.errors) {
-//       // handle error here
-//       console.log('error occurred: ', result.errors[0]);
-//       res.sendStatus(500);
-//     } else {
-//       // handle success here
-//       const photos = result.response as Random[];
-//       res.send({
-//         url: photos[0].urls.thumb
-//       });
-
-//       unsplash.photos.trackDownload({
-//         downloadLocation: photos[0].links.download_location
-//       });
-//     }
-//   } catch (err) {
-//     res.status(500).send({ message: err });
-//   }
-// });
-
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
-});
+const server = new Server();
+server.setup();
+server.listen();

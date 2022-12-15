@@ -8,6 +8,10 @@ import interactionPlugin from '@fullcalendar/interaction';
 import type { CalendarOptions, EventClickArg } from '@fullcalendar/common';
 import { onMounted } from 'vue';
 import { EventContentArg } from '@fullcalendar/core';
+import axios from 'axios';
+
+const calendarResponse = await axios.get('/api/screens/calendar');
+const events = calendarResponse.data.events;
 
 const calendarOptions: CalendarOptions = {
   plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin, iCalendarPlugin],
@@ -22,23 +26,25 @@ const calendarOptions: CalendarOptions = {
   // fixedWeekCount: false,
   // dayMaxEvents: true,
   height: '100%',
-  eventSources: [
-    {
-      id: 'demoId',
-      url: 'https://fullcalendar.io/api/demo-feeds/events.json',
-      backgroundColor: 'blue',
-      borderColor: 'blue',
-      className: 'ev-display2'
-    },
-    {
-      id: 'hood',
-      url: '/api/ical',
-      format: 'ics',
-      backgroundColor: 'red',
-      borderColor: 'green',
-      className: 'ev-display'
-    }
-  ],
+  // eventSources: [
+  //   {
+  //     id: 'demoId',
+  //     url: 'https://fullcalendar.io/api/demo-feeds/events.json',
+  //     backgroundColor: 'blue',
+  //     borderColor: 'blue',
+  //     className: 'ev-display2'
+  //   },
+  //   {
+  //     id: 'hood',
+  //     url: '/api/ical',
+  //     format: 'ics',
+  //     backgroundColor: 'red',
+  //     borderColor: 'green',
+  //     className: 'ev-display'
+  //   }
+  // ],
+
+  events,
 
   // events: {
   //   url: '/api/ical',

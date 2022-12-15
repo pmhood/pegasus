@@ -53,10 +53,12 @@ import { WidgetId } from '../controllers/home-controller';
 
 export interface Config {
   screens: ScreensConfig;
+  plugins: PluginsConfig;
 }
 
 export interface ScreensConfig {
   home: HomeScreenConfig;
+  calendar: CalendarScreenConfig;
 }
 
 export interface HomeScreenConfig {
@@ -75,3 +77,12 @@ export interface CalendarWidgetConfig extends WidgetConfig {
 }
 
 export interface GmailCalenderWidgetConfig {}
+
+export interface PluginsConfig {
+  [pluginKey: string]: any;
+}
+
+export interface CalendarScreenConfig {
+  refreshInterval: number;
+  sources: string[];
+}

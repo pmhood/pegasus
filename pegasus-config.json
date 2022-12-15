@@ -4,19 +4,43 @@
       "refreshInterval": 15000,
       "widgetConfigs": [
         {
-          "id": "core/relevant",
           "componentName": "RelevantWidget",
           "settings": {}
         },
         {
-          "id": "core/calendar",
           "componentName": "CalendarWidget",
-          "settings": {}
+          "settings": {
+            "calendars": ["mm-test", "fullcalendar-test", "holidays"]
+          }
         },
         {
-          "id": "core/photoOfTheDay",
           "componentName": "PhotoOfTheDayWidget",
           "settings": {}
+        }
+      ]
+    },
+    "calendar": {
+      "refreshInterval": 15000,
+      "sources": ["mm-test", "fullcalendar-test", "holidays"]
+    }
+  },
+  "plugins": {
+    "core/calendar": {
+      "sources": [
+        {
+          "id": "mm-test",
+          "url": "https://calendar.google.com/calendar/ical/db26bfdd34e830ef0e8dbafdd53e079bcf527e238410728924656d2eed2c981b%40group.calendar.google.com/public/basic.ics",
+          "type": "ical"
+        },
+        {
+          "id": "fullcalendar-test",
+          "url": "https://fullcalendar.io/api/demo-feeds/events.json?start=2022-11-27T00%3A00%3A00-05%3A00&end=2023-01-08T00%3A00%3A00-05%3A00",
+          "type": "json"
+        },
+        {
+          "id": "holidays",
+          "url": "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics",
+          "type": "ical"
         }
       ]
     }
