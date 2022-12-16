@@ -7,58 +7,34 @@ import iCalendarPlugin from '@fullcalendar/icalendar';
 import interactionPlugin from '@fullcalendar/interaction';
 import type { CalendarOptions, EventClickArg } from '@fullcalendar/common';
 import { onMounted } from 'vue';
-import { EventContentArg } from '@fullcalendar/core';
+import type { EventContentArg } from '@fullcalendar/core';
 import axios from 'axios';
+import moment from 'moment';
 
 const calendarResponse = await axios.get('/api/screens/calendar');
 const events = calendarResponse.data.events;
 
-const calendarOptions: CalendarOptions = {
-  plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin, iCalendarPlugin],
-  headerToolbar: {
-    left: 'prev,next today',
-    center: 'title',
-    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+const scheduleCalendarOptions: CalendarOptions = {
+  plugins: [dayGridPlugin, timeGridPlugin],
+  allDayContent: 'All Day',
+  nowIndicator: true,
+  initialDate: new Date(),
+  showNonCurrentDates: false,
+  initialView: 'timeGridFourDay',
+  views: {
+    timeGridFourDay: {
+      type: 'timeGrid',
+      duration: { days: 5 }
+    }
   },
-  initialView: 'dayGridMonth',
-  eventClick: handleEventClick,
-  // showNonCurrentDates: false,
-  // fixedWeekCount: false,
-  // dayMaxEvents: true,
+  scrollTime: moment().format('HH:MM:00'),
   height: '100%',
-  // eventSources: [
-  //   {
-  //     id: 'demoId',
-  //     url: 'https://fullcalendar.io/api/demo-feeds/events.json',
-  //     backgroundColor: 'blue',
-  //     borderColor: 'blue',
-  //     className: 'ev-display2'
-  //   },
-  //   {
-  //     id: 'hood',
-  //     url: '/api/ical',
-  //     format: 'ics',
-  //     backgroundColor: 'red',
-  //     borderColor: 'green',
-  //     className: 'ev-display'
-  //   }
-  // ],
-
   events,
-
-  // events: {
-  //   url: '/api/ical',
-  //   format: 'ics'
-  // },
-  // eventColor: 'rgb(255,0,0)',
-  // eventBackgroundColor: 'rgb(0,255,0)',
-  // eventBorderColor: 'rgb(0,0,255)',
   eventTimeFormat: {
     hour: 'numeric',
     minute: '2-digit',
     meridiem: 'short'
   },
-  // eventClassNames: 'ev-display',
   eventContent: (arg: EventContentArg) => {
     console.log(arg);
 
@@ -69,6 +45,77 @@ const calendarOptions: CalendarOptions = {
     return { domNodes: [div] };
   }
 };
+
+// const calendarOptions: CalendarOptions = {
+//   plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin, iCalendarPlugin],
+//   // initialView: 'timeGridWeek',
+//   allDayContent: 'All Day',
+//   nowIndicator: true,
+//   initialDate: new Date(),
+//   showNonCurrentDates: false,
+//   initialView: 'timeGridFourDay',
+//   views: {
+//     timeGridFourDay: {
+//       type: 'timeGrid',
+//       duration: { days: 5 }
+//     }
+//   },
+//   scrollTime: moment().format('HH:MM:00'),
+
+//   headerToolbar: {
+//     left: 'prev,next today',
+//     center: 'title',
+//     right: 'dayGridMonth,timeGridWeek,timeGridDay'
+//   },
+
+//   eventClick: handleEventClick,
+//   // showNonCurrentDates: false,
+//   // fixedWeekCount: false,
+//   // dayMaxEvents: true,
+//   height: '100%',
+//   // eventSources: [
+//   //   {
+//   //     id: 'demoId',
+//   //     url: 'https://fullcalendar.io/api/demo-feeds/events.json',
+//   //     backgroundColor: 'blue',
+//   //     borderColor: 'blue',
+//   //     className: 'ev-display2'
+//   //   },
+//   //   {
+//   //     id: 'hood',
+//   //     url: '/api/ical',
+//   //     format: 'ics',
+//   //     backgroundColor: 'red',
+//   //     borderColor: 'green',
+//   //     className: 'ev-display'
+//   //   }
+//   // ],
+
+//   events,
+
+//   // events: {
+//   //   url: '/api/ical',
+//   //   format: 'ics'
+//   // },
+//   // eventColor: 'rgb(255,0,0)',
+//   // eventBackgroundColor: 'rgb(0,255,0)',
+//   // eventBorderColor: 'rgb(0,0,255)',
+//   eventTimeFormat: {
+//     hour: 'numeric',
+//     minute: '2-digit',
+//     meridiem: 'short'
+//   },
+//   // eventClassNames: 'ev-display',
+//   eventContent: (arg: EventContentArg) => {
+//     console.log(arg);
+
+//     const div = document.createElement('div');
+//     div.className = 'event-container';
+//     div.innerHTML = `<span class='event-title'>${arg.event.title}</span><br/><span class='event-time'>${arg.timeText}</span>`;
+
+//     return { domNodes: [div] };
+//   }
+// };
 // }) //function (arg) {
 //     console.log(arg);
 //     let italicEl = document.createElement('i');
@@ -109,7 +156,7 @@ onMounted(() => {
 </script>
 <template>
   <div id="calendar-container">
-    <FullCalendar :options="calendarOptions" />
+    <FullCalendar :options="scheduleCalendarOptions" />
   </div>
 </template>
 
@@ -144,5 +191,11 @@ onMounted(() => {
 
 .event-time {
   @apply text-slate-400;
+}
+
+/* Increase the time slot height */
+.fc-timegrid-slot {
+  height: 3em !important;
+  border-bottom: 0 !important;
 }
 </style>
