@@ -24,7 +24,7 @@ export class HomeController {
     const widgets: HomeScreenWidget[] = [];
 
     for (const widgetConfig of homeScreen.widgetConfigs) {
-      switch (widgetConfig.id) {
+      switch (widgetConfig.componentName) {
         case WidgetId.PhotoOfTheDay:
           const photos = await this.photosService.getPhoto();
           const photo = randomElement(photos);
@@ -34,7 +34,6 @@ export class HomeController {
             photographer: photo.photographer
           };
           const w = {
-            id: widgetConfig.id,
             componentName: widgetConfig.componentName,
             data
           } as HomeScreenWidget;
@@ -43,16 +42,14 @@ export class HomeController {
           break;
         case WidgetId.Calendar:
           // const events = await this.calendarService.getCalendarEvents();
-          // widgets.push({
-          //   componentName: widgetConfig.componentName,
-          //   id: widgetConfig.id,
-          //   data: { events } as CalendarWidgetData
-          // });
+          widgets.push({
+            componentName: widgetConfig.componentName,
+            data: { events: [] } as CalendarWidgetData
+          });
           break;
         case WidgetId.Relevant:
           widgets.push({
             componentName: widgetConfig.componentName,
-            id: widgetConfig.id,
             data: {} as RelevantWidgetData
           });
           break;
@@ -68,7 +65,7 @@ export class HomeController {
 }
 
 export enum WidgetId {
-  Relevant = 'core/relevant',
-  Calendar = 'core/calendar',
-  PhotoOfTheDay = 'core/photoOfTheDay'
+  Relevant = 'RelevantWidget',
+  Calendar = 'CalendarWidget',
+  PhotoOfTheDay = 'PhotoOfTheDayWidget'
 }

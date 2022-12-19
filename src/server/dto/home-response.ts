@@ -4,7 +4,6 @@ export interface HomeScreenResponse {
 }
 
 export interface HomeScreenWidget {
-  id: string;
   componentName: string;
   data: CalendarWidgetData | PhotoOfTheDayWidgetData | RelevantWidgetData;
 }

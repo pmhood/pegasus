@@ -67,8 +67,7 @@ export interface HomeScreenConfig {
 }
 
 export interface WidgetConfig {
-  id: WidgetId;
-  componentName: string;
+  componentName: WidgetId;
   settings: CalendarWidgetConfig;
 }
 
