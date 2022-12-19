@@ -1,8 +1,22 @@
 /** @type {import('tailwindcss').Config} */
+
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   content: ['./index.html', './src/client/**/*.{vue,js,html}'],
   theme: {
-    extend: {}
+    extend: {
+      fontFamily: {
+        sans: ['"Inter var"', { fontFeatureSettings: '"cv11", "cv03", "cv04"' }]
+      }
+    }
   },
-  plugins: []
+  plugins: [
+    require('@headlessui/tailwindcss'),
+    require('@tailwindcss/typography'),
+    require('daisyui')
+  ],
+  daisyui: {
+    themes: false
+  }
 };
