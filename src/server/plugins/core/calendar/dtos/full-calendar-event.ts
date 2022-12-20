@@ -18,4 +18,5 @@ export interface FullCalendarEvent {
   extendedProps?: any;
   description?: string;
   sourceId?: string;
+  sourceColor?: string;
 }

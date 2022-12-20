@@ -16,10 +16,17 @@ export class CalendarPlugin {
     this.calendarService = new CalendarIcalSource();
   }
 
-  public async fetchAllEvents(): Promise<FullCalendarEvent[]> {
-    // TODO: maybe make this all part of a base class that indexes into a map of classes by type?
+  public async fetchEventsForSources(
+    sourceIds: string[]
+  ): Promise<FullCalendarEvent[]> {
     const allEvents: FullCalendarEvent[] = [];
-    for (const source of this.settings.sources) {
+
+    for (const sourceId of sourceIds) {
+      const source = this.settings.sources.find((item) => item.id === sourceId);
+      if (!source) {
+        continue;
+      }
+
       if (source.type === CalendarSourceType.Ical) {
         const events = await CalendarIcalSource.getEvents(
           source.id,

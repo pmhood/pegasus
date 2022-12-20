@@ -21,7 +21,17 @@
     },
     "calendar": {
       "refreshInterval": 15000,
-      "sources": ["mm-test", "fullcalendar-test", "holidays"]
+      "sources": [
+        {
+          "id": "mm-test",
+          "color": "red"
+        },
+        {
+          "id": "fullcalendar-test",
+          "color": "amber"
+        },
+        { "id": "holidays", "color": "green" }
+      ]
     }
   },
   "plugins": {

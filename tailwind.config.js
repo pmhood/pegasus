@@ -18,5 +18,14 @@ module.exports = {
   ],
   daisyui: {
     themes: false
-  }
+  },
+  safelist: [
+    {
+      pattern: /bg-/
+    },
+    {
+      pattern: /text-/
+    },
+    { pattern: /border/ }
+  ]
 };
