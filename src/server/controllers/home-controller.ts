@@ -1,4 +1,4 @@
-import { Config } from '../config/config';
+import { PegasusConfig } from '../config/pegasus-config';
 import { ConfigService } from '../config/config-service';
 import {
   CalendarWidgetData,
@@ -15,7 +15,9 @@ export class HomeController {
   constructor(private readonly configService: ConfigService) {}
 
   public async getData(): Promise<HomeScreenResponse> {
-    const config = (await this.configService.getConfig()) as Config | undefined;
+    const config = (await this.configService.getConfig()) as
+      | PegasusConfig
+      | undefined;
     if (!config) {
       throw new Error('No config data found');
     }

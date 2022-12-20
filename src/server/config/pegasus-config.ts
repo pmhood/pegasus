@@ -1,57 +1,6 @@
-/*
-
-// photo of the day
-{
-	id: "photoOfTheDay",
-	componentName: "",
-	settings: {
-		provider: "unsplash",
-		options: {
-			type: "random"
-		}
-	}
-}
-
-// weather
-{
-	id: "weather",
-	componentName: "",
-	settings: {
-		provider: "",
-		options: {}
-	}
-}
-
-// calendar
-{
-	id: "calendar",
-	componentName: "",
-	settings: {
-		provider: "google",
-		options: {}
-	}
-}
-
-{
-  screens: {
-    home: {
-      refreshInterval: number
-      widgets: [
-        {
-          id: string,
-          componentName: string,
-          settings: any
-        }
-      ]
-    }
-  }
-}
-
-*/
-
 import { WidgetId } from '../controllers/home-controller';
 
-export interface Config {
+export interface PegasusConfig {
   screens: ScreensConfig;
   plugins: PluginsConfig;
 }
@@ -83,5 +32,10 @@ export interface PluginsConfig {
 
 export interface CalendarScreenConfig {
   refreshInterval: number;
-  sources: string[];
+  sources: CalendarScreenSource[];
+}
+
+export interface CalendarScreenSource {
+  id: string;
+  color: string;
 }

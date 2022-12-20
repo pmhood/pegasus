@@ -32,6 +32,7 @@ let calendarApi: CalendarApi | undefined = undefined;
 
 const calendarResponse = await axios.get('/api/screens/calendar');
 const events = calendarResponse.data.events;
+const sources = calendarResponse.data.sources;
 
 const title = moment().format('MMMM y');
 const currentTime = ref(moment().format('h:mm a'));
@@ -79,9 +80,13 @@ const scheduleCalendarOptions: CalendarOptions = {
     return moment(arg.date).format('h a');
   },
   eventContent: (arg: EventContentArg) => {
+    const sourceColor = arg.event.extendedProps.sourceColor;
     const div = document.createElement('div');
-    div.className = 'event-container';
-    div.innerHTML = `<span class='event-title'>${arg.event.title}</span><br/><span class='event-time'>${arg.timeText}</span>`;
+    const bgColor = arg.event.allDay
+      ? `${sourceColor}-300`
+      : `${sourceColor}-100`;
+    div.className = `bg-${bgColor} h-full border-l-8 border-l-${sourceColor}-400 p-2 rounded-lg text-${sourceColor}-900`;
+    div.innerHTML = `<span>${arg.event.title}</span><br/><span>${arg.timeText}</span>`;
 
     return { domNodes: [div] };
   }
@@ -357,18 +362,14 @@ function setView(type: ViewType) {
   z-index: -1;
 }
 
-.ev-display {
-  /* @apply border-l-8 border-l-red-500 drop-shadow-xl hover:bg-blue-500; */
-  @apply bg-green-100;
-}
-.ev-display2 {
-  /* @apply border-l-8 border-l-red-500 drop-shadow-xl hover:bg-blue-500; */
-  @apply bg-blue-100;
-}
-
 /* .fc-daygrid-event-harness {
   @apply shadow-md shadow-red-200;
 } */
+
+.fc-timegrid-event,
+.fc-daygrid-event {
+  @apply bg-transparent border-0 !important;
+}
 
 .event-container {
   @apply pl-2 border-l-8 border-l-red-500;

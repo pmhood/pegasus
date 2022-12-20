@@ -3,8 +3,8 @@ dotenv.config();
 
 import * as express from 'express';
 import { Application, Express, Request, Response } from 'express';
-import { Config } from './config/config';
 import { ConfigService } from './config/config-service';
+import { PegasusConfig } from './config/pegasus-config';
 import { PluginLocator } from './plugins/plugin-locator';
 import { ScreensRoutes } from './resources/screens-routes';
 
@@ -13,7 +13,7 @@ const PORT = 3000;
 class Server {
   private app: Application = express();
 
-  private createPlugins(config: Config) {
+  private createPlugins(config: PegasusConfig) {
     for (const [key, value] of Object.entries(config.plugins)) {
       PluginLocator.add(key, value);
     }
