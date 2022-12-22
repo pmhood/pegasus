@@ -1,12 +1,13 @@
 import { PegasusConfig } from './pegasus-config';
 import * as fs from 'fs';
+import { EnvironmentVar, getEnvVar } from './environment-var';
 
 export class ConfigService {
   private config: PegasusConfig | undefined;
 
   constructor() {
     this.config = JSON.parse(
-      fs.readFileSync(process.env['PEGASUS_CONFIG_FILEPATH'] as string, 'utf8')
+      fs.readFileSync(getEnvVar(EnvironmentVar.PegasusConfigFile), 'utf8')
     ) as PegasusConfig;
   }
 

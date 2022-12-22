@@ -1,11 +1,12 @@
 import * as unsplashJs from 'unsplash-js';
+import { EnvironmentVar, getEnvVar } from '../../../../config/environment-var';
 
 export class UnsplashService {
   private readonly unsplashApi: any;
 
   constructor() {
     this.unsplashApi = unsplashJs.createApi({
-      accessKey: process.env.UNSPLASH_ACCESS_KEY as string
+      accessKey: getEnvVar(EnvironmentVar.UnsplashAccessKey)
     });
   }
 
