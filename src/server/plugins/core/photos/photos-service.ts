@@ -1,5 +1,6 @@
 // import { PexelsService } from '../../../services/photos/sources/pexels-service';
 
+import { EnvironmentVar, getEnvVar } from '../../../config/environment-var';
 import { PexelsService } from './sources/pexels-service';
 
 export class PhotosService {
@@ -8,7 +9,7 @@ export class PhotosService {
   // constructor(private readonly dataSources: any) {
   constructor() {
     this.pexelsService = new PexelsService(
-      process.env['PEXELS_API_KEY'] as string
+      getEnvVar(EnvironmentVar.PexelsApiKey)
     );
   }
 
