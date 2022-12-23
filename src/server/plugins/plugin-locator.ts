@@ -1,7 +1,7 @@
 import { CalendarPlugin } from './core/calendar/calendar-plugin';
 
 export class PluginLocator {
-  private static plugins = {};
+  private static plugins: any = {};
 
   public static add(id: string, settings: any) {
     switch (id) {

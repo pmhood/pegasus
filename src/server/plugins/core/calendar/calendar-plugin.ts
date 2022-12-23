@@ -8,12 +8,12 @@ import { CalendarJsonSource } from './sources/calendar-json-source';
 
 export class CalendarPlugin {
   public static id = 'core/calendar';
-  private readonly calendarService: CalendarIcalSource;
+  // private readonly calendarService: CalendarIcalSource;
 
   // TODO: cache events
 
   constructor(private readonly settings: CalendarPluginSettings) {
-    this.calendarService = new CalendarIcalSource();
+    // this.calendarService = new CalendarIcalSource();
   }
 
   public async fetchEventsForSources(

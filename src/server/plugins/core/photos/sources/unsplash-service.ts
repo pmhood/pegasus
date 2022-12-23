@@ -5,20 +5,26 @@ export class UnsplashService {
   private readonly unsplashApi: any;
 
   constructor() {
-    this.unsplashApi = unsplashJs.createApi({
-      accessKey: getEnvVar(EnvironmentVar.UnsplashAccessKey)
-    });
+    const key = getEnvVar(EnvironmentVar.UnsplashAccessKey);
+    if (key) {
+      this.unsplashApi = unsplashJs.createApi({
+        accessKey: key
+      });
+    } else {
+      console.warn('No API key for Unsplash');
+    }
   }
 
   public async getRandomPhoto(): Promise<any> {
-    // const result = await this.unsplashApi.photos.getRandom({
-    //   count: 1,
-    //   contentFilter: 'high',
-    //   // topicIds: ['nature'],
-    //   // query: 'weather',
-    //   collectionIds: ['162468']
-    //   // orientation: 'landscape'
-    // });
+    const result = await this.unsplashApi.photos.getRandom({
+      count: 1,
+      contentFilter: 'high',
+      // topicIds: ['nature'],
+      // query: 'weather',
+      collectionIds: ['162468']
+      // orientation: 'landscape'
+    });
+    return result;
     // console.log(result);
     // if (result.errors) {
     //   // handle error here

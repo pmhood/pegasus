@@ -19,6 +19,7 @@ import {
 import { BackwardIcon, ForwardIcon } from '@heroicons/vue/24/outline';
 import { useRouter } from 'vue-router';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
+import router from '@/router';
 
 enum ViewType {
   Schedule = 'Schedule view',
@@ -225,7 +226,7 @@ onMounted(() => {
 });
 
 function goBack() {
-  useRouter().back();
+  router.back();
 }
 function goPrev() {
   calendarApi?.prev();
