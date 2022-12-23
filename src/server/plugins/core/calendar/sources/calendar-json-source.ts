@@ -10,7 +10,7 @@ export class CalendarJsonSource {
 
     try {
       const response = await axios.get(url);
-      const items = response.data.map((item) => {
+      const items = response.data.map((item: any) => {
         return { ...item, sourceId };
       });
       events.push(...items);

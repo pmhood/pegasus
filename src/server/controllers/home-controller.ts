@@ -29,18 +29,20 @@ export class HomeController {
       switch (widgetConfig.componentName) {
         case WidgetId.PhotoOfTheDay:
           const photos = await this.photosService.getPhoto();
-          const photo = randomElement(photos);
-          const data: PhotoOfTheDayWidgetData = {
-            imageUrl: photo.url,
-            description: photo.description,
-            photographer: photo.photographer
-          };
-          const w = {
-            componentName: widgetConfig.componentName,
-            data
-          } as HomeScreenWidget;
+          if (photos.length > 0) {
+            const photo = randomElement(photos);
+            const data: PhotoOfTheDayWidgetData = {
+              imageUrl: photo.url,
+              description: photo.description,
+              photographer: photo.photographer
+            };
+            const w = {
+              componentName: widgetConfig.componentName,
+              data
+            } as HomeScreenWidget;
 
-          widgets.push(w);
+            widgets.push(w);
+          }
           break;
         case WidgetId.Calendar:
           // const events = await this.calendarService.getCalendarEvents();

@@ -4,17 +4,18 @@ import { EnvironmentVar, getEnvVar } from '../../../config/environment-var';
 import { PexelsService } from './sources/pexels-service';
 
 export class PhotosService {
-  private pexelsService: PhotosDataSource;
+  private pexelsService: PhotosDataSource | undefined;
 
   // constructor(private readonly dataSources: any) {
   constructor() {
-    this.pexelsService = new PexelsService(
-      getEnvVar(EnvironmentVar.PexelsApiKey)
-    );
+    const apiKey = getEnvVar(EnvironmentVar.PexelsApiKey);
+    if (apiKey) {
+      this.pexelsService = new PexelsService(apiKey);
+    }
   }
 
   public async getPhoto(): Promise<Photo[]> {
-    const photos = await this.pexelsService.getPhotos();
+    const photos = (await this.pexelsService?.getPhotos()) ?? [];
     return photos;
   }
 }

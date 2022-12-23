@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
     "outDir": "dist/server",
-    "sourceMap": true
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "preserveConstEnums": true
   },
   "include": ["src/server/**/*"]
 }
