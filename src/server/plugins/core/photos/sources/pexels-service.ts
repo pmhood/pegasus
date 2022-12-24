@@ -1,5 +1,6 @@
-import { Photo, PhotosDataSource } from '../photos-service';
+import { PhotosDataSource } from '../photos-service';
 import * as pexels from 'pexels';
+import { Photo } from '../../../../../common/dto/home-response';
 
 /*
 https://www.pexels.com/api/documentation/
@@ -29,15 +30,21 @@ https://www.pexels.com/api/documentation/
 
 export class PexelsService implements PhotosDataSource {
   private client: any;
-  private media: pexels.Photo[] = [];
+  private mediaByCollectionId: any = {};
 
   constructor(apiKey: string) {
     this.client = pexels.createClient(apiKey);
   }
-  public async getPhotos(): Promise<Photo[]> {
+
+  public async getPhotosFromCollection(collectionId: string): Promise<Photo[]> {
+    if (this.mediaByCollectionId[collectionId]) {
+      return this.mediaByCollectionId[collectionId];
+    }
+
+    console.log('PexelsService: requesting photos');
     const response = await this.client.collections.media({
-      id: 'alttuky',
-      per_page: 25,
+      id: collectionId,
+      per_page: 50,
       type: 'photos'
     });
 
@@ -46,34 +53,15 @@ export class PexelsService implements PhotosDataSource {
       return [];
     }
 
-    this.media = (response as any).media as pexels.Photo[];
-
-    return this.media.map((photo) => {
+    const pexelPhotos = (response as any).media as pexels.Photo[];
+    this.mediaByCollectionId[collectionId] = pexelPhotos.map((photo) => {
       return {
-        url: photo.src.large,
+        url: photo.src.large2x,
         photographer: photo.photographer,
         title: photo.alt
       } as Photo;
     });
+
+    return this.mediaByCollectionId[collectionId];
   }
 }
-
-// interface PexelMedia {
-//   type: string;
-//   id: number;
-//   width: number;
-//   height: number;
-//   photographer: string;
-//   src: PexelMediaSrc;
-// }
-
-// interface PexelMediaSrc {
-//   original: string;
-//   large2x: string;
-//   large: string;
-//   medium: string;
-//   small: string;
-//   portrait: string;
-//   landscape: string;
-//   tiny: string;
-// }

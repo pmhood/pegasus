@@ -1,5 +1,4 @@
-// import { PexelsService } from '../../../services/photos/sources/pexels-service';
-
+import { Photo } from '../../../../common/dto/home-response';
 import { EnvironmentVar, getEnvVar } from '../../../config/environment-var';
 import { PexelsService } from './sources/pexels-service';
 
@@ -14,20 +13,14 @@ export class PhotosService {
     }
   }
 
-  public async getPhoto(): Promise<Photo[]> {
-    const photos = (await this.pexelsService?.getPhotos()) ?? [];
+  public async getPhotosFromCollection(collectionId: string): Promise<Photo[]> {
+    const photos =
+      (await this.pexelsService?.getPhotosFromCollection(collectionId)) ?? [];
+
     return photos;
   }
 }
 
 export interface PhotosDataSource {
-  getPhotos(): Promise<Photo[]>;
-}
-
-export interface Photo {
-  url: string;
-  photographer?: string;
-  title?: string;
-  description?: string;
-  location?: string;
+  getPhotosFromCollection(collectionId: string): Promise<Photo[]>;
 }
