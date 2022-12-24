@@ -37,9 +37,7 @@ widgets.value = markRaw(homescreen.data.homeScreen.widgets as any);
     <template #default>
       <main>
         <!-- <div class="bg-blue-500 h-screen w-screen grid gap-4 grid-cols-2"> -->
-        <div
-          class="h-screen w-screen grid gap-4 grid-cols-2 bg-gradient-to-r from-cyan-500 to-blue-500"
-        >
+        <div class="h-screen w-screen grid grid-cols-2">
           <!-- <div
             class="bg-cover bg-center bg-[url('https://images.unsplash.com/photo-1668934805187-359213a84c9c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzODYzOTR8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NzAyNjEyMTY&ixlib=rb-4.0.3&q=80&w=1080')]"
           >
@@ -56,12 +54,14 @@ widgets.value = markRaw(homescreen.data.homeScreen.widgets as any);
             v-bind:is="componentClassFromString(widgets[0].componentName)"
           ></component>
 
-          <div class="h-auto grid gap-4 grid-rows-2">
+          <div
+            class="pl-2 h-auto grid gap-2 grid-rows-2 bg-gradient-to-r from-cyan-500 to-fuchsia-500"
+          >
             <component
               v-if="thirdWidget !== ''"
               v-bind:is="componentClassFromString(widgets[1].componentName)"
             ></component>
-            <div class="h-auto grid gap-4 grid-cols-2">
+            <div class="h-auto grid gap-2 grid-cols-2">
               <component
                 v-if="thirdWidget !== ''"
                 v-bind:is="componentClassFromString(widgets[2].componentName)"
