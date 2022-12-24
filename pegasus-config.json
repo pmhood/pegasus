@@ -2,22 +2,48 @@
   "screens": {
     "home": {
       "refreshInterval": 15000,
-      "widgetConfigs": [
-        {
-          "componentName": "RelevantWidget",
-          "settings": {}
+      "layout": "oneLeftThreeRight",
+      "widgets": {
+        "leftWidget": {
+          "componentName": "ForYouWidget",
+          "settings": {
+            "photo": {
+              "source": "pexels",
+              "settings": {
+                "collectionId": "5b5edol"
+              }
+            }
+          }
         },
-        {
+        "rightTopWidget": {
           "componentName": "CalendarWidget",
           "settings": {
             "calendars": ["mm-test", "fullcalendar-test", "holidays"]
           }
         },
-        {
+        "rightBottomLeftWidget": {
           "componentName": "PhotoOfTheDayWidget",
-          "settings": {}
+          "settings": {
+            "photo": {
+              "source": "pexels",
+              "settings": {
+                "collectionId": "alttuky"
+              }
+            }
+          }
+        },
+        "rightBottomRightWidget": {
+          "componentName": "PhotoOfTheDayWidget",
+          "settings": {
+            "photo": {
+              "source": "pexels",
+              "settings": {
+                "collectionId": "alttuky"
+              }
+            }
+          }
         }
-      ]
+      }
     },
     "calendar": {
       "refreshInterval": 15000,

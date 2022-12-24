@@ -1,24 +1,28 @@
 <script setup lang="ts">
+import type { Photo } from 'src/common/dto/home-response';
 import { onMounted, ref } from 'vue';
 
 export interface PhotoOfTheDayData {
-  imageUrl: string;
-  photographer: string;
+  photo?: Photo;
 }
 
 const props = defineProps<PhotoOfTheDayData>();
-console.log(props);
-const imageUrl = ref(`url('${props.imageUrl}')`);
-const photographer = ref(props.photographer);
+console.log(props.photo?.url);
+const url = ref(props.photo?.url);
+const imageUrl = ref(`url('${props.photo?.url}')`);
+const photographer = ref(props.photo?.photographer);
 </script>
 <template>
-  <div class="bg-cover bg-center bg-image">
-    <h1>Photo Of The Day</h1>
-    <p>{{ photographer }}</p>
+  <div class="bg-cover bg-center bg-image flex flex-col">
+    <div
+      class="p-4 text-2xl font-light text-white mt-auto w-full bg-black/50 items-end"
+    >
+      {{ photographer }}
+    </div>
   </div>
 </template>
 
-<style>
+<style scoped>
 .bg-image {
   background-image: v-bind(imageUrl);
 }

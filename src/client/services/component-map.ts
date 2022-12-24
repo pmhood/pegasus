@@ -1,12 +1,12 @@
 import MyButton from '@/components/MyButton.vue';
 import PhotoOfTheDayWidgetVue from '@/components/widgets/photoOfTheDay/PhotoOfTheDayWidget.vue';
 import CalendarWidgetVue from '@/components/widgets/calendar/CalendarWidget.vue';
-import RelevantWidgetVue from '@/components/widgets/relevant/RelevantWidget.vue';
+import ForYouWidget from '@/components/widgets/for-you/ForYouWidget.vue';
 
 export const componentClasses: { [key: string]: any } = {
   PhotoOfTheDayWidget: PhotoOfTheDayWidgetVue,
   CalendarWidget: CalendarWidgetVue,
-  RelevantWidget: RelevantWidgetVue
+  ForYouWidget: ForYouWidget
 };
 
 export function componentClassFromString(name: string): any {

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "dist/server",
+    "outDir": "dist/",
     "sourceMap": true,
     "noImplicitAny": false,
     "noUnusedLocals": true,
@@ -9,5 +9,5 @@
     "allowJs": true,
     "preserveConstEnums": true
   },
-  "include": ["src/server/**/*"]
+  "include": ["src/server/**/*", "src/common/**/*"]
 }

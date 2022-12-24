@@ -15,7 +15,7 @@ function go() {
 }
 </script>
 <template>
-  <div class="bg-white cursor-pointer grid grid-cols-2" @click="go()">
+  <div class="p-4 cursor-pointer grid grid-cols-2" @click="go()">
     <h1>Calendar View</h1>
     <div class="">
       <Month class=""></Month>

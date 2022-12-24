@@ -1,14 +1,21 @@
-import { PegasusConfig } from '../config/pegasus-config';
+import { PegasusConfig, WidgetConfig } from '../config/pegasus-config';
 import { ConfigService } from '../config/config-service';
 import {
   CalendarWidgetData,
+  ForYouWidgetData,
   HomeScreenResponse,
   HomeScreenWidget,
-  PhotoOfTheDayWidgetData,
-  RelevantWidgetData
-} from '../dto/home-response';
+  LayoutType,
+  OneLeftThreeRightLayout,
+  PhotoOfTheDayWidgetData
+} from '../../common/dto/home-response';
 import { PhotosService } from '../plugins/core/photos/photos-service';
 import { randomElement } from '../utils/array-utils';
+import {
+  ForYouWidgetSettings,
+  PhotoSource
+} from '../config/for-you-widget-settings';
+import { PhotoOfTheDayWidgetSettings } from '../config/photo-of-the-day-widget-settings';
 
 export class HomeController {
   private photosService = new PhotosService();
@@ -23,53 +30,91 @@ export class HomeController {
     }
     const homeScreen = config.screens.home;
 
-    const widgets: HomeScreenWidget[] = [];
-
-    for (const widgetConfig of homeScreen.widgetConfigs) {
-      switch (widgetConfig.componentName) {
-        case WidgetId.PhotoOfTheDay:
-          const photos = await this.photosService.getPhoto();
-          if (photos.length > 0) {
-            const photo = randomElement(photos);
-            const data: PhotoOfTheDayWidgetData = {
-              imageUrl: photo.url,
-              description: photo.description,
-              photographer: photo.photographer
-            };
-            const w = {
-              componentName: widgetConfig.componentName,
-              data
-            } as HomeScreenWidget;
-
-            widgets.push(w);
-          }
-          break;
-        case WidgetId.Calendar:
-          // const events = await this.calendarService.getCalendarEvents();
-          widgets.push({
-            componentName: widgetConfig.componentName,
-            data: { events: [] } as CalendarWidgetData
-          });
-          break;
-        case WidgetId.Relevant:
-          widgets.push({
-            componentName: widgetConfig.componentName,
-            data: {} as RelevantWidgetData
-          });
-          break;
-      }
-    }
     const response: HomeScreenResponse = {
       refreshInterval: homeScreen.refreshInterval,
-      widgets
+      layout: homeScreen.layout,
+      widgets: {}
     };
 
+    if (homeScreen.layout === LayoutType.OneLeftThreeRight) {
+      const widgetsForLayout: OneLeftThreeRightLayout = {
+        leftWidget: await this.getWidget(homeScreen.widgets.leftWidget),
+        rightTopWidget: await this.getWidget(homeScreen.widgets.rightTopWidget),
+        rightBottomLeftWidget: await this.getWidget(
+          homeScreen.widgets.rightBottomLeftWidget
+        ),
+        rightBottomRightWidget: await this.getWidget(
+          homeScreen.widgets.rightBottomRightWidget
+        )
+      };
+
+      response.widgets = widgetsForLayout;
+    }
+
     return response;
+  }
+
+  private async getPhotoOfTheDayWidgetData(
+    settings: PhotoOfTheDayWidgetSettings
+  ): Promise<PhotoOfTheDayWidgetData> {
+    const data: PhotoOfTheDayWidgetData = {};
+
+    if (settings.photo.source === PhotoSource.Pexels) {
+      const photos = await this.photosService.getPhotosFromCollection(
+        settings.photo.settings.collectionId
+      );
+      data.photo = randomElement(photos);
+    }
+
+    return data;
+  }
+
+  private async getWidget(
+    widgetConfig: WidgetConfig
+  ): Promise<HomeScreenWidget | undefined> {
+    switch (widgetConfig.componentName) {
+      case WidgetId.PhotoOfTheDay:
+        const photoOfTheDayData = await this.getPhotoOfTheDayWidgetData(
+          widgetConfig.settings as PhotoOfTheDayWidgetSettings
+        );
+
+        return {
+          componentName: widgetConfig.componentName,
+          data: photoOfTheDayData
+        } as HomeScreenWidget;
+
+        break;
+
+      case WidgetId.Calendar:
+        // const events = await this.calendarService.getCalendarEvents();
+        return {
+          componentName: widgetConfig.componentName,
+          data: { events: [] } as CalendarWidgetData
+        };
+        break;
+
+      case WidgetId.ForYou:
+        const data: ForYouWidgetData = {};
+
+        const settings = widgetConfig.settings as ForYouWidgetSettings;
+        if (settings.photo.source === PhotoSource.Pexels) {
+          const photos = await this.photosService.getPhotosFromCollection(
+            settings.photo.settings.collectionId
+          );
+          data.photo = randomElement(photos);
+        }
+
+        return {
+          componentName: widgetConfig.componentName,
+          data
+        };
+        break;
+    }
   }
 }
 
 export enum WidgetId {
-  Relevant = 'RelevantWidget',
+  ForYou = 'ForYouWidget',
   Calendar = 'CalendarWidget',
   PhotoOfTheDay = 'PhotoOfTheDayWidget'
 }
