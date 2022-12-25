@@ -7,7 +7,7 @@
     "prod:run": "node server/server.js",
     "dev": "concurrently -c blue,yellow \"npm:server:dev\" \"npm:client:dev\"",
     "server:dev": "npm run server:build && concurrently -c red,green \"npm:server:build:watch\" \"npm:server:run:watch\"",
-    "server:run:watch": "npx nodemon ./dist/server/server.js",
+    "server:run:watch": "npx nodemon --inspect ./dist/server/server.js",
     "server:build:watch": "npx tsc -w -p tsconfig.server.json",
     "server:build": "npm run server:clean && npx tsc -p tsconfig.server.json && npm run server:copy",
     "server:clean": "rm -rf dist/server",
