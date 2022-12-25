@@ -20,6 +20,8 @@ import { BackwardIcon, ForwardIcon } from '@heroicons/vue/24/outline';
 import { useRouter } from 'vue-router';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
 import router from '@/router';
+import type { CalendarScreenResponse } from 'src/common/dto/calendar-screen-response';
+import type { FullCalendarEvent } from 'src/common/dto/full-calendar-event';
 
 enum ViewType {
   Schedule = 'Schedule view',
@@ -31,9 +33,7 @@ enum ViewType {
 const calendar = ref<any>(null);
 let calendarApi: CalendarApi | undefined = undefined;
 
-const calendarResponse = await axios.get('/api/screens/calendar');
-const events = calendarResponse.data.events;
-const sources = calendarResponse.data.sources;
+const events = await refreshCalendar();
 
 const currentlyShownDate = ref(moment());
 const currentTime = ref(moment().format('h:mm a'));
@@ -92,6 +92,20 @@ const scheduleCalendarOptions: CalendarOptions = {
     return { domNodes: [div] };
   }
 };
+
+async function refreshCalendar(): Promise<FullCalendarEvent[]> {
+  const calendarResponse = await axios.get('/api/screens/calendar');
+  const calScreenResponse = calendarResponse.data as CalendarScreenResponse;
+  const events = calScreenResponse.events;
+  const refreshInterval = calScreenResponse.refreshInterval;
+  setTimeout(async () => {
+    const events = await refreshCalendar();
+    calendarApi?.removeAllEvents();
+    calendarApi?.addEventSource(events);
+  }, refreshInterval);
+
+  return events;
+}
 
 const monthCalendarOptions: CalendarOptions = {
   plugins: [dayGridPlugin, timeGridPlugin],

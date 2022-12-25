@@ -1,5 +1,5 @@
 import * as ical from 'node-ical';
-import { FullCalendarEvent } from '../dtos/full-calendar-event';
+import { FullCalendarEvent } from '../../../../../common/dto/full-calendar-event';
 
 export class CalendarIcalSource {
   public static async getEvents(

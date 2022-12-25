@@ -2,7 +2,7 @@ import {
   CalendarPluginSettings,
   CalendarSourceType
 } from './calendar-plugin-settings';
-import { FullCalendarEvent } from './dtos/full-calendar-event';
+import { FullCalendarEvent } from '../../../../common/dto/full-calendar-event';
 import { CalendarIcalSource } from './sources/calendar-ical-source';
 import { CalendarJsonSource } from './sources/calendar-json-source';
 

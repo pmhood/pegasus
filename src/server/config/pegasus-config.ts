@@ -1,4 +1,4 @@
-import { LayoutType } from '../../common/dto/home-response';
+import { LayoutType } from '../../common/dto/home-screen-response';
 import { WidgetId } from '../controllers/home-controller';
 import { ForYouWidgetSettings } from './for-you-widget-settings';
 import { PhotoOfTheDayWidgetSettings } from './photo-of-the-day-widget-settings';

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import moment from 'moment';
-import type { Photo } from 'src/common/dto/home-response';
-// import type { ForYouWidgetData } from '../../../../common/dto/home-response';
+import type { Photo } from 'src/common/dto/home-screen-response';
 import { onMounted, ref } from 'vue';
 
 export interface ForYouWidgetData {
