@@ -86,6 +86,9 @@ const homeScreenResponse = response.data as HomeScreenResponse;
             </div>
           </div>
         </div>
+        <div class="absolute top-0 right-0 text-white text-xs">
+          v{{ homeScreenResponse.version }}
+        </div>
       </main>
     </template>
     <template #fallback>

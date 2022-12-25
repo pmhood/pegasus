@@ -11,7 +11,7 @@
     "server:build:watch": "npx tsc -w -p tsconfig.server.json",
     "server:build": "npm run server:clean && npx tsc -p tsconfig.server.json && npm run server:copy",
     "server:clean": "rm -rf dist/server",
-    "server:copy": "cp pegasus-config.json ./dist/server/",
+    "server:copy": "cp package.json dist/",
     "client:dev": "sleep 5 && vite",
     "client:build": "run-p type-check build-only",
     "preview": "vite preview",

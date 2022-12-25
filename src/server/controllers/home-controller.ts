@@ -33,7 +33,8 @@ export class HomeController {
     const response: HomeScreenResponse = {
       refreshInterval: homeScreen.refreshInterval,
       layout: homeScreen.layout,
-      widgets: {}
+      widgets: {},
+      version: this.configService.version
     };
 
     if (homeScreen.layout === LayoutType.OneLeftThreeRight) {

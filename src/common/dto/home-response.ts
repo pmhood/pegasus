@@ -1,9 +1,8 @@
-// import { Photo } from '../../server/plugins/core/photos/photos-service';
-
 export interface HomeScreenResponse {
   refreshInterval: number;
   layout: LayoutType;
   widgets: OneLeftThreeRightLayout;
+  version: string;
 }
 
 export interface HomeScreenWidget {
