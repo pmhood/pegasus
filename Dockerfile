@@ -9,7 +9,8 @@ COPY public public/
 RUN npm install -q && npm run prod:build
 RUN mkdir -p /app/pegasus && \
   cp -R dist/* /app/pegasus/ && \
-  cp -R node_modules /app/pegasus/
+  cp -R node_modules /app/pegasus/ && \
+  cp package.json /app/pegasus/
 
 RUN rm -Rf /tmp/pegasus
 

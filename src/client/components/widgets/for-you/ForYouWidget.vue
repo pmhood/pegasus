@@ -21,7 +21,7 @@ setInterval(() => {
       <div class="text-4xl font-light text-white drop-shadow-lg">
         {{ currentDateTime.format('dddd, MMMM DD') }}
       </div>
-      <div class="text-9xl font-bold text-white">
+      <div class="text-8xl font-bold text-white">
         <span>{{ currentDateTime.format('h') }}</span
         ><span class="animate-pulse-colon">:</span
         ><span>{{ currentDateTime.format('mm a') }}</span>
