@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Photo } from 'src/common/dto/home-response';
+import type { Photo } from 'src/common/dto/home-screen-response';
 import { onMounted, ref } from 'vue';
 
 export interface PhotoOfTheDayData {

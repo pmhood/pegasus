@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FullCalendarEvent } from '../dtos/full-calendar-event';
+import { FullCalendarEvent } from '../../../../../common/dto/full-calendar-event';
 
 export class CalendarJsonSource {
   public static async getEvents(

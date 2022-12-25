@@ -8,7 +8,7 @@ import {
   LayoutType,
   OneLeftThreeRightLayout,
   PhotoOfTheDayWidgetData
-} from '../../common/dto/home-response';
+} from '../../common/dto/home-screen-response';
 import { PhotosService } from '../plugins/core/photos/photos-service';
 import { randomElement } from '../utils/array-utils';
 import {

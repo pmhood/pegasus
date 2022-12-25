@@ -8,7 +8,7 @@ import {
   componentClasses,
   componentClassFromString
 } from '@/services/component-map';
-import type { HomeScreenResponse } from 'src/common/dto/home-response';
+import type { HomeScreenResponse } from 'src/common/dto/home-screen-response';
 // import { HomeScreenResponse } from '../../common/dto/home-response';
 
 const now = new Date();

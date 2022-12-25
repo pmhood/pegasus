@@ -1,6 +1,6 @@
 import { PhotosDataSource } from '../photos-service';
 import * as pexels from 'pexels';
-import { Photo } from '../../../../../common/dto/home-response';
+import { Photo } from '../../../../../common/dto/home-screen-response';
 
 /*
 https://www.pexels.com/api/documentation/

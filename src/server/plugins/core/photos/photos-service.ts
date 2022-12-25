@@ -1,4 +1,4 @@
-import { Photo } from '../../../../common/dto/home-response';
+import { Photo } from '../../../../common/dto/home-screen-response';
 import { EnvironmentVar, getEnvVar } from '../../../config/environment-var';
 import { PexelsService } from './sources/pexels-service';
 

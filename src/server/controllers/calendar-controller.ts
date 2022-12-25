@@ -1,7 +1,7 @@
 import { PluginLocator } from '../plugins/plugin-locator';
 import { CalendarPlugin } from '../plugins/core/calendar/calendar-plugin';
-import { FullCalendarEvent } from '../plugins/core/calendar/dtos/full-calendar-event';
 import { ConfigService } from '../config/config-service';
+import { CalendarScreenResponse } from '../../common/dto/calendar-screen-response';
 
 export class CalendarController {
   constructor(private readonly configService: ConfigService) {}
@@ -12,8 +12,9 @@ export class CalendarController {
       return;
     }
 
-    const sources = (await this.configService.getConfig()).screens.calendar
-      .sources;
+    const config = await this.configService.getConfig();
+
+    const sources = config.screens.calendar.sources;
     const events = await plugin.fetchEventsForSources(
       sources.map((item) => item.id)
     );
@@ -25,10 +26,9 @@ export class CalendarController {
       return item;
     });
 
-    return { events: eventsWithColor };
+    return {
+      events: eventsWithColor,
+      refreshInterval: config.screens.calendar.refreshInterval
+    };
   }
-}
-
-export interface CalendarScreenResponse {
-  events: FullCalendarEvent[];
 }
