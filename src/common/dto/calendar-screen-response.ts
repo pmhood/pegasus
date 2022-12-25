@@ -1,4 +1,4 @@
-import { FullCalendarEvent } from './full-calendar-event';
+import type { FullCalendarEvent } from './full-calendar-event';
 
 export interface CalendarScreenResponse {
   events: FullCalendarEvent[];
