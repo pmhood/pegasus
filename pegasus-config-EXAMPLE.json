@@ -18,7 +18,7 @@
         "rightTopWidget": {
           "componentName": "CalendarWidget",
           "settings": {
-            "calendars": ["mm-test", "fullcalendar-test", "holidays"]
+            "calendars": ["holidays"]
           }
         },
         "rightBottomLeftWidget": {
@@ -47,27 +47,12 @@
     },
     "calendar": {
       "refreshInterval": 15000,
-      "sources": [
-        {
-          "id": "hoodfamily",
-          "color": "red"
-        },
-        {
-          "id": "fullcalendar-test",
-          "color": "amber"
-        },
-        { "id": "holidays", "color": "green" }
-      ]
+      "sources": [{ "id": "holidays", "color": "green" }]
     }
   },
   "plugins": {
     "core/calendar": {
       "sources": [
-        {
-          "id": "hoodfamily",
-          "url": "https://calendar.google.com/calendar/ical/eakj46okbos41ufli41uld04bo%40group.calendar.google.com/private-729760223e6f9173fbaf1a26d09e38a8/basic.ics",
-          "type": "ical"
-        },
         {
           "id": "holidays",
           "url": "https://calendar.google.com/calendar/ical/en.usa%23holiday%40group.v.calendar.google.com/public/basic.ics",
