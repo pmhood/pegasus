@@ -35,7 +35,7 @@ const calendarResponse = await axios.get('/api/screens/calendar');
 const events = calendarResponse.data.events;
 const sources = calendarResponse.data.sources;
 
-const title = moment().format('MMMM y');
+const currentlyShownDate = ref(moment());
 const currentTime = ref(moment().format('h:mm a'));
 
 const scheduleCalendarOptions: CalendarOptions = {
@@ -230,12 +230,15 @@ function goBack() {
 }
 function goPrev() {
   calendarApi?.prev();
+  currentlyShownDate.value = moment(calendarApi?.getDate());
 }
 function goNext() {
   calendarApi?.next();
+  currentlyShownDate.value = moment(calendarApi?.getDate());
 }
 function goToToday() {
   calendarApi?.today();
+  currentlyShownDate.value = moment(calendarApi?.getDate());
 }
 
 const viewType = ref<ViewType>(ViewType.Schedule);
@@ -255,7 +258,9 @@ function setView(type: ViewType) {
         <ChevronLeftIcon class="h-6 w-6 text-slate-800" />
       </button>
 
-      <h3 class="font-semibold px-4">{{ moment().format('MMMM y') }}</h3>
+      <h3 class="font-semibold px-4">
+        {{ currentlyShownDate.format('MMMM y') }}
+      </h3>
     </div>
     <div class="navbar-center"></div>
     <div class="navbar-end divide-x-2">

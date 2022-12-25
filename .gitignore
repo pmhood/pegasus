@@ -1,4 +1,6 @@
 .env
+pegasus-config.json
+docker-compose.yaml
 
 # Logs
 logs
