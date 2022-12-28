@@ -15,27 +15,28 @@ for (let i = 0; i < numWeeks * 7; i++) {
 <template>
   <div class="flex items-center justify-end">
     <div class="max-w-sm w-full">
-      <div class="md:p-8 p-5 dark:bg-gray-800 bg-white rounded-t">
+      <div class="md:p-8 p-5 rounded-t">
         <div class="flex items-center justify-center">
           <span
             tabindex="0"
-            class="focus:outline-none text-2xl font-bold dark:text-gray-100 text-gray-800"
-            >{{ moment().format('MMMM') }}</span
+            class="focus:outline-none text-2xl dark:text-gray-100 text-gray-800"
+            >{{ moment().format('MMMM yy') }}</span
           >
         </div>
-        <div class="flex items-center justify-between pt-12 overflow-x-auto">
+        <div class="flex pt-4 overflow-x-auto">
           <table class="w-full">
             <thead>
               <tr>
                 <th v-for="idx in 7">
                   <div class="w-full flex justify-center">
                     <p
-                      class="text-base font-medium text-center text-gray-800 dark:text-gray-100"
+                      class="text-xs font-medium text-center text-gray-800 dark:text-gray-100"
                     >
                       {{
                         moment()
                           .day(idx - 1)
-                          .format('dd')
+                          .format('ddd')
+                          .toUpperCase()
                       }}
                     </p>
                   </div>
@@ -75,9 +76,12 @@ for (let i = 0; i < numWeeks * 7; i++) {
 
 <style scoped>
 .nonCurrentMonth {
-  @apply text-slate-200;
+  @apply text-slate-200/50;
 }
-.today {
+/* .today {
   @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 focus:bg-indigo-500 hover:bg-indigo-500 text-base w-8 h-8 flex items-center justify-center font-medium text-white bg-indigo-700 rounded-full;
+} */
+.today {
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white focus:bg-white hover:bg-indigo-500 text-base w-8 h-8 flex items-center justify-center font-medium text-cyan-400 bg-white rounded-full;
 }
 </style>

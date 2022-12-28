@@ -19,7 +19,7 @@ const timeString = (hours ? hours : 12) + ':' + now.getMinutes();
 let widgets = ref([] as any[]);
 
 const response = await axios.get('/api/screens/home');
-console.log(response.data);
+
 const homeScreenResponse = response.data as HomeScreenResponse;
 // const h = response.data.homeScreen;
 // console.log(h);
