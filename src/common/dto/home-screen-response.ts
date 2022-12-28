@@ -1,3 +1,5 @@
+import type { FullCalendarEvent } from './full-calendar-event';
+
 export interface HomeScreenResponse {
   refreshInterval: number;
   layout: LayoutType;
@@ -11,14 +13,11 @@ export interface HomeScreenWidget {
 }
 
 export interface CalendarWidgetData {
-  events: CalendarEvent[];
+  events: BucketedEvents;
 }
 
-export interface CalendarEvent {
-  title: string;
-  description: string;
-  start: Date;
-  end?: Date;
+export interface BucketedEvents {
+  [date: string]: FullCalendarEvent[];
 }
 
 export interface PhotoOfTheDayWidgetData {

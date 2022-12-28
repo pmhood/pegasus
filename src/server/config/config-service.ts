@@ -22,7 +22,9 @@ export class ConfigService {
     this.version = pkg.version;
   }
 
-  public async getConfig(): Promise<PegasusConfig> {
+  public getConfig(): PegasusConfig {
     return this.config;
   }
 }
+
+export const Config = new ConfigService();

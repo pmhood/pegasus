@@ -1,5 +1,5 @@
-import { PegasusConfig, WidgetConfig } from '../config/pegasus-config';
-import { ConfigService } from '../config/config-service';
+import { WidgetConfig } from '../config/pegasus-config';
+import { Config } from '../config/config-service';
 import {
   CalendarWidgetData,
   ForYouWidgetData,
@@ -16,25 +16,22 @@ import {
   PhotoSource
 } from '../config/for-you-widget-settings';
 import { PhotoOfTheDayWidgetSettings } from '../config/photo-of-the-day-widget-settings';
+import { PluginLocator } from '../plugins/plugin-locator';
+import { CalendarPlugin } from '../plugins/core/calendar/calendar-plugin';
+import { CalendarWidgetSettings } from '../config/calendar-widget-settings';
+import * as moment from 'moment';
 
 export class HomeController {
   private photosService = new PhotosService();
-  constructor(private readonly configService: ConfigService) {}
 
   public async getData(): Promise<HomeScreenResponse> {
-    const config = (await this.configService.getConfig()) as
-      | PegasusConfig
-      | undefined;
-    if (!config) {
-      throw new Error('No config data found');
-    }
-    const homeScreen = config.screens.home;
+    const homeScreen = Config.getConfig().screens.home;
 
     const response: HomeScreenResponse = {
       refreshInterval: homeScreen.refreshInterval,
       layout: homeScreen.layout,
       widgets: {},
-      version: this.configService.version
+      version: Config.version
     };
 
     if (homeScreen.layout === LayoutType.OneLeftThreeRight) {
@@ -55,21 +52,6 @@ export class HomeController {
     return response;
   }
 
-  private async getPhotoOfTheDayWidgetData(
-    settings: PhotoOfTheDayWidgetSettings
-  ): Promise<PhotoOfTheDayWidgetData> {
-    const data: PhotoOfTheDayWidgetData = {};
-
-    if (settings.photo.source === PhotoSource.Pexels) {
-      const photos = await this.photosService.getPhotosFromCollection(
-        settings.photo.settings.collectionId
-      );
-      data.photo = randomElement(photos);
-    }
-
-    return data;
-  }
-
   private async getWidget(
     widgetConfig: WidgetConfig
   ): Promise<HomeScreenWidget | undefined> {
@@ -84,15 +66,15 @@ export class HomeController {
           data: photoOfTheDayData
         } as HomeScreenWidget;
 
-        break;
-
       case WidgetId.Calendar:
-        // const events = await this.calendarService.getCalendarEvents();
+        const calendarData = await this.getCalendarData(
+          widgetConfig.settings as CalendarWidgetSettings
+        );
+
         return {
           componentName: widgetConfig.componentName,
-          data: { events: [] } as CalendarWidgetData
-        };
-        break;
+          data: calendarData
+        } as HomeScreenWidget;
 
       case WidgetId.ForYou:
         const data: ForYouWidgetData = {};
@@ -109,8 +91,68 @@ export class HomeController {
           componentName: widgetConfig.componentName,
           data
         };
-        break;
     }
+  }
+
+  private async getPhotoOfTheDayWidgetData(
+    settings: PhotoOfTheDayWidgetSettings
+  ): Promise<PhotoOfTheDayWidgetData> {
+    const data: PhotoOfTheDayWidgetData = {};
+
+    if (settings.photo.source === PhotoSource.Pexels) {
+      const photos = await this.photosService.getPhotosFromCollection(
+        settings.photo.settings.collectionId
+      );
+      data.photo = randomElement(photos);
+    }
+
+    return data;
+  }
+
+  private async getCalendarData(
+    settings: CalendarWidgetSettings
+  ): Promise<CalendarWidgetData> {
+    const plugin = PluginLocator.get(CalendarPlugin.id) as CalendarPlugin;
+    const events = await plugin.fetchEventsForSources(settings.calendars);
+
+    const today = moment();
+    // TODO: Filter .end > now? - only show events now or in the future within 1 day
+    const todayEvents = events.filter((event) => {
+      const diffDays = moment(event.start).diff(today, 'd');
+      return diffDays >= 0 && diffDays < 2;
+    });
+
+    const sortedEvents = todayEvents.sort((a, b) => {
+      if (moment(a.start).isBefore(moment(b.start), 'minute')) {
+        return -1;
+      } else if (moment(a.start).isAfter(moment(b.start), 'minute')) {
+        return 1;
+      } else {
+        if (moment(a.end).isBefore(moment(b.end), 'minute')) {
+          return -1;
+        } else if (moment(a.end).isAfter(moment(b.end), 'minute')) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    });
+
+    const bucketedEvents = sortedEvents.reduce((acc, currentValue) => {
+      const key = moment(currentValue.start).format('YYYY-MM-DD');
+      let bucket = acc[key];
+      if (!bucket) {
+        bucket = [];
+        acc[key] = bucket;
+      }
+      bucket.push(currentValue);
+
+      return acc;
+    }, {});
+
+    return {
+      events: bucketedEvents
+    } as CalendarWidgetData;
   }
 }
 

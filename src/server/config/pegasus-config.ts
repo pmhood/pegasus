@@ -1,5 +1,6 @@
 import { LayoutType } from '../../common/dto/home-screen-response';
 import { WidgetId } from '../controllers/home-controller';
+import { CalendarWidgetSettings } from './calendar-widget-settings';
 import { ForYouWidgetSettings } from './for-you-widget-settings';
 import { PhotoOfTheDayWidgetSettings } from './photo-of-the-day-widget-settings';
 
@@ -22,16 +23,10 @@ export interface HomeScreenConfig {
 export interface WidgetConfig {
   componentName: WidgetId;
   settings:
-    | CalendarWidgetConfig
+    | CalendarWidgetSettings
     | ForYouWidgetSettings
     | PhotoOfTheDayWidgetSettings;
 }
-
-export interface CalendarWidgetConfig {
-  dataSources: GmailCalenderWidgetConfig;
-}
-
-export interface GmailCalenderWidgetConfig {}
 
 export interface PluginsConfig {
   [pluginKey: string]: any;
