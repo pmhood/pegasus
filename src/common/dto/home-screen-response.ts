@@ -1,4 +1,5 @@
 import type { FullCalendarEvent } from './full-calendar-event';
+import type { RssItem } from './rss-item';
 
 export interface HomeScreenResponse {
   refreshInterval: number;
@@ -9,7 +10,11 @@ export interface HomeScreenResponse {
 
 export interface HomeScreenWidget {
   componentName: string;
-  data: CalendarWidgetData | PhotoOfTheDayWidgetData | ForYouWidgetData;
+  data:
+    | CalendarWidgetData
+    | PhotoOfTheDayWidgetData
+    | ForYouWidgetData
+    | RssWidgetData;
 }
 
 export interface CalendarWidgetData {
@@ -45,4 +50,8 @@ export interface Photo {
   title?: string;
   description?: string;
   location?: string;
+}
+
+export interface RssWidgetData {
+  rssItem?: RssItem[];
 }

@@ -4,14 +4,17 @@ if (process.env.ENVIRONMENT !== 'prod') {
 
 import * as express from 'express';
 import { Application } from 'express';
+import { CacheService } from './cache/cache-service';
 import { ConfigService } from './config/config-service';
 import {
   EnvironmentVar,
   getEnvVar,
   Environment
 } from './config/environment-var';
-import { PegasusConfig } from './config/pegasus-config';
-import { PluginLocator } from './plugins/plugin-locator';
+import { CalendarPlugin } from './plugins/core/calendar/calendar-plugin';
+import { PhotoPlugin } from './plugins/core/photos/photo-plugin';
+import { RssPlugin } from './plugins/core/rss/rss-plugin';
+import { PluginFactory } from './plugins/plugin-factory';
 import { ScreensRoutes } from './resources/screens-routes';
 
 const PORT = 3000;
@@ -19,20 +22,25 @@ const PORT = 3000;
 class Server {
   private app: Application = express();
 
-  private createPlugins(config: PegasusConfig) {
-    for (const [key, value] of Object.entries(config.plugins)) {
-      PluginLocator.add(key, value);
-    }
+  private registerPlugins() {
+    PluginFactory.register(RssPlugin.id, RssPlugin);
+    PluginFactory.register(PhotoPlugin.id, PhotoPlugin);
+    PluginFactory.register(CalendarPlugin.id, CalendarPlugin);
   }
 
   public async setup() {
+    // Register plugins
+    this.registerPlugins();
+
+    // Load config
     const configService = new ConfigService();
+    configService.loadConfig();
     const config = await configService.getConfig();
     if (!config) {
       throw new Error('No config found');
     }
-    this.createPlugins(config);
 
+    // Setup middleware
     if (getEnvVar(EnvironmentVar.Enviroment) === Environment.Prod) {
       this.app.use(express.static('client'));
     } else {
@@ -52,7 +60,10 @@ class Server {
       }
     );
 
-    ScreensRoutes.addRoutes(this.app, config);
+    const cacheService = new CacheService();
+    PluginFactory.cacheService = cacheService;
+
+    ScreensRoutes.addRoutes(this.app, config, cacheService);
   }
 
   public listen() {

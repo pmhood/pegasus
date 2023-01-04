@@ -34,6 +34,7 @@
     "@headlessui/vue": "^1.7.7",
     "@heroicons/vue": "^2.0.13",
     "axios": "^1.2.0",
+    "cheerio": "^1.0.0-rc.12",
     "daisyui": "^2.45.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
@@ -42,11 +43,14 @@
     "node-ical": "^0.15.3",
     "pexels": "^1.4.0",
     "pinia": "^2.0.26",
+    "rss-parser": "^3.12.0",
     "swagger-ui-express": "^4.6.0",
     "unsplash-js": "^7.0.15",
     "vite-plugin-ssr": "^0.4.54",
     "vue": "^3.2.45",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "xmldom": "^0.6.0",
+    "xpath": "^0.0.32"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
