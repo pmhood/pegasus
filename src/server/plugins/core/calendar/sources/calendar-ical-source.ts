@@ -1,8 +1,9 @@
 import * as ical from 'node-ical';
 import { FullCalendarEvent } from '../../../../../common/dto/full-calendar-event';
+import { CalendarSource } from '../calendar-source';
 
-export class CalendarIcalSource {
-  public static async getEvents(
+export class CalendarIcalSource implements CalendarSource {
+  public async getEvents(
     sourceId: string,
     url: string
   ): Promise<FullCalendarEvent[]> {

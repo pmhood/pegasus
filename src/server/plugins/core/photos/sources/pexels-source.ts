@@ -1,6 +1,7 @@
-import { PhotosDataSource } from '../photos-service';
 import * as pexels from 'pexels';
-import { Photo } from '../../../../../common/dto/home-screen-response';
+import { PhotoSource } from '../photo-source';
+import { PhotoItem } from '../../../../../common/dto/photo-item';
+import { EnvironmentVar, getEnvVar } from '../../../../config/environment-var';
 
 /*
 https://www.pexels.com/api/documentation/
@@ -28,18 +29,40 @@ https://www.pexels.com/api/documentation/
 }
 */
 
-export class PexelsService implements PhotosDataSource {
-  private client: any;
-  private mediaByCollectionId: any = {};
+export class PexelsSource implements PhotoSource {
+  public static id = 'pexels';
 
-  constructor(apiKey: string) {
+  private client: any;
+  // private mediaByCollectionId: any = {};
+
+  constructor() {
+    const apiKey = getEnvVar(EnvironmentVar.PexelsApiKey);
+    if (!apiKey) {
+      console.error('PexelsSource: No API key found');
+      throw new Error('PexelsSource: No API key found');
+    }
     this.client = pexels.createClient(apiKey);
   }
 
-  public async getPhotosFromCollection(collectionId: string): Promise<Photo[]> {
-    if (this.mediaByCollectionId[collectionId]) {
-      return this.mediaByCollectionId[collectionId];
+  public async fetchItems(
+    settings: PexelsSourceSettings
+  ): Promise<PhotoItem[]> {
+    const photos: PhotoItem[] = [];
+    if (settings.collectionId) {
+      photos.push(
+        ...(await this.getPhotosFromCollection(settings.collectionId))
+      );
     }
+
+    return photos;
+  }
+
+  private async getPhotosFromCollection(
+    collectionId: string
+  ): Promise<PhotoItem[]> {
+    // if (this.mediaByCollectionId[collectionId]) {
+    //   return this.mediaByCollectionId[collectionId];
+    // }
 
     console.log('PexelsService: requesting photos');
     const response = await this.client.collections.media({
@@ -54,14 +77,19 @@ export class PexelsService implements PhotosDataSource {
     }
 
     const pexelPhotos = (response as any).media as pexels.Photo[];
-    this.mediaByCollectionId[collectionId] = pexelPhotos.map((photo) => {
+    const photoItems = pexelPhotos.map((photo) => {
       return {
         url: photo.src.large2x,
         photographer: photo.photographer,
         title: photo.alt
-      } as Photo;
+      } as PhotoItem;
     });
 
-    return this.mediaByCollectionId[collectionId];
+    return photoItems;
   }
+}
+
+export interface PexelsSourceSettings {
+  collectionId?: string;
+  limit: number;
 }

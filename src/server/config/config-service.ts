@@ -7,6 +7,11 @@ export class ConfigService {
   public readonly version: string;
 
   constructor() {
+    const pkg = require('../../package.json');
+    this.version = pkg.version;
+  }
+
+  public loadConfig() {
     const filepath = getEnvVar(EnvironmentVar.PegasusConfigFile);
     if (!filepath) {
       throw new Error('no config file found');
@@ -17,14 +22,12 @@ export class ConfigService {
     this.config = JSON.parse(
       fs.readFileSync(filepath, 'utf8')
     ) as PegasusConfig;
-
-    const pkg = require('../../package.json');
-    this.version = pkg.version;
   }
 
   public getConfig(): PegasusConfig {
+    this.loadConfig();
     return this.config;
   }
 }
 
-export const Config = new ConfigService();
+// export const Config = new ConfigService();
