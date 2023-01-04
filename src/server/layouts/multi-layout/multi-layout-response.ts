@@ -1,6 +1,5 @@
-export interface LayoutResponse {
-  layout: string;
-}
+import { LayoutResponse } from '../layout-response';
+
 export interface MultiLayoutResponse extends LayoutResponse {
   left: any;
   rightTop: any;

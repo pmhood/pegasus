@@ -1,3 +1,4 @@
+import { CalendarWidget } from './calendar/calendar-widget';
 import { CardWidget } from './containers/card-widget/card-widget';
 import { ForYouWidget } from './for-you/for-you-widget';
 import { UpcomingEventsWidget } from './upcoming-events/upcoming-events-widget';
@@ -12,7 +13,11 @@ export class WidgetFactory {
         return new UpcomingEventsWidget(widgetData.settings);
       case ForYouWidget.id:
         return new ForYouWidget();
+      case CalendarWidget.id:
+        return new CalendarWidget(widgetData.settings);
     }
+
+    console.error(`Cannot find widget: ${widgetData.widgetId}`);
   }
 }
 

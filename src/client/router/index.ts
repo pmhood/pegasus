@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import FullCalendarView from '@/views/CalendarView.vue';
+import FullCalendarView from '@/views/CalendarView_old.vue';
 import ScreenView from '@/views/ScreenView.vue';
+import CalendarView from '@/views/CalendarView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,7 +23,7 @@ const router = createRouter({
     {
       path: '/calendar',
       name: 'calendar',
-      component: FullCalendarView
+      component: CalendarView
     }
   ]
 });

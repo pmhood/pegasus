@@ -11,17 +11,12 @@ export class PluginFactory {
   }
 
   public static make(pluginData: PluginData): any | undefined {
-    console.log(PluginFactory.plugins);
     const pluginClass = PluginFactory.plugins[pluginData.pluginId];
     if (pluginClass) {
       return new pluginClass(pluginData.settings, this.cacheService);
     }
-    // switch (pluginData.pluginId) {
-    //   case RssPlugin.id:
-    //     return new RssPlugin(pluginData.settings, this.cacheService);
-    //   case PhotoPlugin.id:
-    //     return new PhotoPlugin(pluginData.settings, this.cacheService);
-    // }
+
+    console.error(`PluginFactory: Cannot find '${pluginData.pluginId}'`);
   }
 }
 

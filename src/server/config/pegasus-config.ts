@@ -13,6 +13,7 @@ export interface PegasusConfig {
 
 export interface ScreensConfig {
   home: ScreenData;
+  calendar: ScreenData;
   // calendar: CalendarScreenConfig;
 }
 

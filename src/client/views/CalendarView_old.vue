@@ -23,11 +23,6 @@ import router from '@/router';
 import type { CalendarScreenResponse } from 'src/common/dto/calendar-screen-response';
 import type { FullCalendarEvent } from 'src/common/dto/full-calendar-event';
 
-export interface InternalCalendarWidgetResponseData {
-  componentName: string;
-  calendarEvents: FullCalendarEvent[];
-}
-
 enum ViewType {
   Schedule = 'Schedule view',
   Day = 'Day view',
@@ -35,12 +30,10 @@ enum ViewType {
   Month = 'Month view'
 }
 
-const props = defineProps<InternalCalendarWidgetResponseData>();
-
 const calendar = ref<any>(null);
 let calendarApi: CalendarApi | undefined = undefined;
 
-// const events = await refreshCalendar();
+const events = await refreshCalendar();
 
 const currentlyShownDate = ref(moment());
 const currentTime = ref(moment().format('h:mm a'));
@@ -60,7 +53,7 @@ const scheduleCalendarOptions: CalendarOptions = {
   },
   scrollTime: moment().subtract(1, 'h').format('HH:MM:00'),
   height: '100%',
-  events: props.calendarEvents,
+  events,
   eventTimeFormat: {
     hour: 'numeric',
     minute: '2-digit',
@@ -77,7 +70,7 @@ const scheduleCalendarOptions: CalendarOptions = {
     div.innerHTML = `<span class=''>${dayOfWeek}</span>`;
 
     if (moment(arg.date).isSame(moment(), 'd')) {
-      div.innerHTML += ` <span class='font-semibold rounded-full text-white bg-blue-600 px-2 py-2 w-8 h-8'>${dayNumber}</span>`;
+      div.innerHTML += ` <span class='font-semibold rounded-full text-white bg-violet-600 px-2 py-2'>${dayNumber}</span>`;
     } else {
       div.innerHTML += ` <span class='text-slate-900 font-semibold'>${dayNumber}</span>`;
     }
@@ -101,52 +94,49 @@ const scheduleCalendarOptions: CalendarOptions = {
 };
 
 async function refreshCalendar(): Promise<FullCalendarEvent[]> {
-  //   const calendarResponse = await axios.get('/api/screens/calendar');
-  //   const calScreenResponse = calendarResponse.data as CalendarScreenResponse;
-  //   const events = calScreenResponse.events;
-  //   const refreshInterval = calScreenResponse.refreshInterval;
-  //   if (refreshInterval > 0) {
-  //     setTimeout(async () => {
-  //       const events = await refreshCalendar();
-  //       calendarApi?.removeAllEvents();
-  //       calendarApi?.addEventSource(events);
-  //     }, refreshInterval);
-  //   }
+  const calendarResponse = await axios.get('/api/screens/calendar');
+  const calScreenResponse = calendarResponse.data as CalendarScreenResponse;
+  const events = calScreenResponse.events;
+  const refreshInterval = calScreenResponse.refreshInterval;
+  setTimeout(async () => {
+    const events = await refreshCalendar();
+    calendarApi?.removeAllEvents();
+    calendarApi?.addEventSource(events);
+  }, refreshInterval);
 
-  //   return events;
-  return props.calendarEvents;
+  return events;
 }
 
-// const monthCalendarOptions: CalendarOptions = {
-//   plugins: [dayGridPlugin, timeGridPlugin],
-//   allDayContent: '',
-//   nowIndicator: true,
-//   initialDate: new Date(),
-//   showNonCurrentDates: false,
-//   initialView: 'month',
-//   scrollTime: moment().subtract(1, 'h').format('HH:MM:00'),
-//   height: '100%',
-//   events,
-//   eventTimeFormat: {
-//     hour: 'numeric',
-//     minute: '2-digit',
-//     meridiem: 'short'
-//   },
+const monthCalendarOptions: CalendarOptions = {
+  plugins: [dayGridPlugin, timeGridPlugin],
+  allDayContent: '',
+  nowIndicator: true,
+  initialDate: new Date(),
+  showNonCurrentDates: false,
+  initialView: 'month',
+  scrollTime: moment().subtract(1, 'h').format('HH:MM:00'),
+  height: '100%',
+  events,
+  eventTimeFormat: {
+    hour: 'numeric',
+    minute: '2-digit',
+    meridiem: 'short'
+  },
 
-//   headerToolbar: false,
-//   slotLabelContent: (arg) => {
-//     return moment(arg.date).format('h a');
-//   },
-//   eventContent: (arg: EventContentArg) => {
-//     // console.log(arg);
+  headerToolbar: false,
+  slotLabelContent: (arg) => {
+    return moment(arg.date).format('h a');
+  },
+  eventContent: (arg: EventContentArg) => {
+    // console.log(arg);
 
-//     const div = document.createElement('div');
-//     div.className = 'event-container';
-//     div.innerHTML = `<span class='event-title'>${arg.event.title}</span><br/><span class='event-time'>${arg.timeText}</span>`;
+    const div = document.createElement('div');
+    div.className = 'event-container';
+    div.innerHTML = `<span class='event-title'>${arg.event.title}</span><br/><span class='event-time'>${arg.timeText}</span>`;
 
-//     return { domNodes: [div] };
-//   }
-// };
+    return { domNodes: [div] };
+  }
+};
 
 // const calendarOptions: CalendarOptions = {
 //   plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin, iCalendarPlugin],
@@ -276,122 +266,120 @@ function setView(type: ViewType) {
 </script>
 
 <template>
-  <div class="flex flex-col w-full">
-    <div class="navbar bg-slate-100 border-b-1 border-slate-500">
-      <div class="navbar-start divide-x-2 divde-black">
-        <button class="px-4" @click="goBack()">
-          <ChevronLeftIcon class="h-6 w-6 text-slate-800" />
-        </button>
+  <div class="navbar bg-slate-100 border-b-1 border-slate-500">
+    <div class="navbar-start divide-x-2 divde-black">
+      <button class="px-4" @click="goBack()">
+        <ChevronLeftIcon class="h-6 w-6 text-slate-800" />
+      </button>
 
-        <h3 class="font-semibold px-4">
-          {{ currentlyShownDate.format('MMMM y') }}
-        </h3>
+      <h3 class="font-semibold px-4">
+        {{ currentlyShownDate.format('MMMM y') }}
+      </h3>
+    </div>
+    <div class="navbar-center"></div>
+    <div class="navbar-end divide-x-2">
+      <div
+        class="inline-flex items-center justify-center border border-gray-300 rounded-md bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+      >
+        <ChevronLeftIcon @click="goPrev()" class="h-4 w- text-slate-800" />
+        <button class="px-8" @click="goToToday()">Today</button>
+        <ChevronRightIcon @click="goNext()" class="h-4 w- text-slate-800" />
       </div>
-      <div class="navbar-center"></div>
-      <div class="navbar-end divide-x-2">
-        <div
-          class="inline-flex items-center justify-center border border-gray-300 rounded-md bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-        >
-          <ChevronLeftIcon @click="goPrev()" class="h-4 w- text-slate-800" />
-          <button class="px-8" @click="goToToday()">Today</button>
-          <ChevronRightIcon @click="goNext()" class="h-4 w- text-slate-800" />
-        </div>
 
-        <div class="">
-          <Menu as="div" class="relative inline-block text-left px-4">
-            <div>
-              <MenuButton
-                class="inline-flex w-full justify-center border border-gray-300 rounded-md bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-              >
-                {{ viewType }}
-                <ChevronDownIcon
-                  class="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
-                  aria-hidden="true"
-                />
-              </MenuButton>
-            </div>
-
-            <transition
-              enter-active-class="transition duration-100 ease-out"
-              enter-from-class="transform scale-95 opacity-0"
-              enter-to-class="transform scale-100 opacity-100"
-              leave-active-class="transition duration-75 ease-in"
-              leave-from-class="transform scale-100 opacity-100"
-              leave-to-class="transform scale-95 opacity-0"
+      <div class="">
+        <Menu as="div" class="relative inline-block text-left px-4">
+          <div>
+            <MenuButton
+              class="inline-flex w-full justify-center border border-gray-300 rounded-md bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
             >
-              <MenuItems
-                class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-              >
-                <div class="px-0 py-1">
-                  <MenuItem v-slot="{ active }">
-                    <button
-                      @click="setView(ViewType.Schedule)"
-                      :class="[
-                        active ? 'bg-slate-100' : 'text-gray-900',
-                        'group flex w-full items-center px-8 py-4 text-sm'
-                      ]"
-                    >
-                      {{ ViewType.Schedule }}
-                    </button>
-                  </MenuItem>
-                  <MenuItem v-slot="{ active }">
-                    <button
-                      @click="setView(ViewType.Day)"
-                      :class="[
-                        active ? 'bg-slate-100' : 'text-gray-900',
-                        'group flex w-full items-center rounded-md px-8 py-4 text-sm'
-                      ]"
-                    >
-                      {{ ViewType.Day }}
-                    </button>
-                  </MenuItem>
-                  <MenuItem v-slot="{ active }">
-                    <button
-                      @click="setView(ViewType.Week)"
-                      :class="[
-                        active ? 'bg-slate-100' : 'text-gray-900',
-                        'group flex w-full items-center rounded-md px-8 py-4 text-sm'
-                      ]"
-                    >
-                      {{ ViewType.Week }}
-                    </button>
-                  </MenuItem>
-                  <MenuItem v-slot="{ active }">
-                    <button
-                      @click="setView(ViewType.Month)"
-                      :class="[
-                        active ? 'bg-slate-100' : 'text-gray-900',
-                        'group flex w-full items-center rounded-md px-8 py-4 text-sm'
-                      ]"
-                    >
-                      {{ ViewType.Month }}
-                    </button>
-                  </MenuItem>
-                </div>
-              </MenuItems>
-            </transition>
-          </Menu>
-        </div>
+              {{ viewType }}
+              <ChevronDownIcon
+                class="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
+                aria-hidden="true"
+              />
+            </MenuButton>
+          </div>
 
-        <h4 class="text-slate-600 p-4">
-          {{ currentTime }}
-        </h4>
+          <transition
+            enter-active-class="transition duration-100 ease-out"
+            enter-from-class="transform scale-95 opacity-0"
+            enter-to-class="transform scale-100 opacity-100"
+            leave-active-class="transition duration-75 ease-in"
+            leave-from-class="transform scale-100 opacity-100"
+            leave-to-class="transform scale-95 opacity-0"
+          >
+            <MenuItems
+              class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+            >
+              <div class="px-0 py-1">
+                <MenuItem v-slot="{ active }">
+                  <button
+                    @click="setView(ViewType.Schedule)"
+                    :class="[
+                      active ? 'bg-slate-100' : 'text-gray-900',
+                      'group flex w-full items-center px-8 py-4 text-sm'
+                    ]"
+                  >
+                    {{ ViewType.Schedule }}
+                  </button>
+                </MenuItem>
+                <MenuItem v-slot="{ active }">
+                  <button
+                    @click="setView(ViewType.Day)"
+                    :class="[
+                      active ? 'bg-slate-100' : 'text-gray-900',
+                      'group flex w-full items-center rounded-md px-8 py-4 text-sm'
+                    ]"
+                  >
+                    {{ ViewType.Day }}
+                  </button>
+                </MenuItem>
+                <MenuItem v-slot="{ active }">
+                  <button
+                    @click="setView(ViewType.Week)"
+                    :class="[
+                      active ? 'bg-slate-100' : 'text-gray-900',
+                      'group flex w-full items-center rounded-md px-8 py-4 text-sm'
+                    ]"
+                  >
+                    {{ ViewType.Week }}
+                  </button>
+                </MenuItem>
+                <MenuItem v-slot="{ active }">
+                  <button
+                    @click="setView(ViewType.Month)"
+                    :class="[
+                      active ? 'bg-slate-100' : 'text-gray-900',
+                      'group flex w-full items-center rounded-md px-8 py-4 text-sm'
+                    ]"
+                  >
+                    {{ ViewType.Month }}
+                  </button>
+                </MenuItem>
+              </div>
+            </MenuItems>
+          </transition>
+        </Menu>
       </div>
+
+      <h4 class="text-slate-600 p-4">
+        {{ currentTime }}
+      </h4>
     </div>
-    <div id="calendar-container">
-      <FullCalendar :options="scheduleCalendarOptions" />
-    </div>
+  </div>
+  <div id="calendar-container">
+    <FullCalendar ref="calendar" :options="scheduleCalendarOptions" />
   </div>
 </template>
 
 <style>
 #calendar-container {
-  /* position: fixed;
+  position: fixed;
   top: 4.5rem;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: -1; */
+  z-index: -1;
 }
 
 /* .fc-daygrid-event-harness {
@@ -455,7 +443,7 @@ function setView(type: ViewType) {
 }
 
 .fc-timegrid-col.fc-day-today {
-  @apply bg-red-50  !important;
+  @apply bg-violet-50  !important;
 }
 
 /* .fc-timegrid-col-frame {

@@ -17,15 +17,19 @@ export class ScreensRoutes {
 
     app.get('/api/screens/home', async (req, res) => {
       const screenController = new ScreenController(config.screens.home);
-
       const response = await screenController.getResponseData();
+
       res.send(response);
     });
 
-    // app.get('/api/screens/calendar', async (req, res) => {
-    //   const response = await calendarController.getData();
-    //   res.send(response);
-    // });
+    app.get('/api/screens/calendar', async (req, res) => {
+      // const response = await calendarController.getData();
+      // res.send(response);
+      const screenController = new ScreenController(config.screens.calendar);
+      const response = await screenController.getResponseData();
+
+      res.send(response);
+    });
 
     // app.get('/api/rss', async (req, res) => {
     //   const p = new RssPlugin({ sources: [] });

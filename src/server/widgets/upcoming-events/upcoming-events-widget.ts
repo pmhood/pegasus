@@ -26,7 +26,7 @@ export class UpcomingEventsWidget implements Widget {
     UpcomingEventsWidgetResponseData | undefined
   > {
     const data = await this.plugin?.getUpcomingEventsWidgetResponseData();
-    console.log(`CardWidget response: ${JSON.stringify(data)}`);
+    console.log(`UpcomingEventsWidget response: ${JSON.stringify(data)}`);
     if (data) {
       data.componentName = UpcomingEventsWidget.id;
     }

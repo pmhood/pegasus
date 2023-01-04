@@ -10,8 +10,12 @@ import { UpcomingEventsWidgetResponseData } from '../../../widgets/upcoming-even
 import { CacheService } from '../../../cache/cache-service';
 import { CalendarSource } from './calendar-source';
 import { BucketedEvents } from '../../../../common/dto/home-screen-response';
+import { CalendarWidgetDisplayable } from '../../../widgets/calendar/calendar-widget-displayable';
+import { CalendarWidgetResponseData } from '../../../widgets/calendar/calendar-widget-response-data';
 
-export class CalendarPlugin implements UpcomingEventsWidgetDisplayable {
+export class CalendarPlugin
+  implements UpcomingEventsWidgetDisplayable, CalendarWidgetDisplayable
+{
   public static id = 'core/calendar';
 
   private readonly cacheKeyPrefix: string;
@@ -25,6 +29,20 @@ export class CalendarPlugin implements UpcomingEventsWidgetDisplayable {
     this.sources = {
       [CalendarSourceType.Ical]: new CalendarIcalSource()
     };
+  }
+
+  public async getCalendarWidgetResponseData(): Promise<
+    CalendarWidgetResponseData | undefined
+  > {
+    const events = await this.fetchEventsForSources();
+    if (!events) {
+      console.warn(`No events found: ${JSON.stringify(this.settings)}`);
+      return;
+    }
+
+    return {
+      calendarEvents: events
+    } as CalendarWidgetResponseData;
   }
 
   // TODO: I don't like how the plugin now needs to know about widgets... maybe the widget should be transforming the plugin data?
