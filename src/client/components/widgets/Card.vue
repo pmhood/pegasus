@@ -16,7 +16,7 @@ const imageUrl = ref(`url('${props.imageUrl}')`);
   <div class="bg-cover bg-center bg-image flex flex-col">
     <div
       v-if="props.title"
-      class="p-4 text-2xl font-light text-white mt-auto w-full bg-black/50 items-end"
+      class="p-4 pt-16 text-sm font-semibold text-white mt-auto w-full bg-gradient-to-t from-black via-black/75 to-transparent items-end"
     >
       {{ props.title }}
     </div>

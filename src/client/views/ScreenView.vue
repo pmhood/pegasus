@@ -27,5 +27,8 @@ const screenResponse = response.data as ScreenResponseData;
       v-bind="screenResponse"
       class="h-full"
     ></component>
+    <div class="absolute top-0 right-0 text-white text-xs">
+      v{{ screenResponse.version }}
+    </div>
   </div>
 </template>

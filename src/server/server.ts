@@ -63,7 +63,7 @@ class Server {
     const cacheService = new CacheService();
     PluginFactory.cacheService = cacheService;
 
-    ScreensRoutes.addRoutes(this.app, config, cacheService);
+    ScreensRoutes.addRoutes(this.app, config);
   }
 
   public listen() {
