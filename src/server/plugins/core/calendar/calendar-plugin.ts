@@ -83,12 +83,16 @@ export class CalendarPlugin
   }
 
   private bucketEvents(events: FullCalendarEvent[]): BucketedEvents {
-    const today = moment();
-    // TODO: Filter .end > now? - only show events now or in the future within 1 day
+    const today = moment().startOf('d');
+
     const todayEvents = events.filter((event) => {
-      const diffDays = moment(event.start).diff(today, 'd');
-      return diffDays >= 0 && diffDays < 2;
+      const start = moment(event.start).startOf('d');
+      const dayDiff = start.diff(today, 'days');
+
+      // Return today and tomorrow
+      return dayDiff >= 0 && dayDiff < 2;
     });
+
     const sortedEvents = todayEvents.sort((a, b) => {
       if (moment(a.start).isBefore(moment(b.start), 'minute')) {
         return -1;
@@ -104,6 +108,7 @@ export class CalendarPlugin
         }
       }
     });
+
     const bucketedEvents = sortedEvents.reduce((acc, currentValue) => {
       const key = moment(currentValue.start).format('YYYY-MM-DD');
       let bucket = acc[key];
