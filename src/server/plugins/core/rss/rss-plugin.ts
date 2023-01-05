@@ -5,12 +5,13 @@ import { CardWidgetDisplayable } from '../../../widgets/containers/card-widget/c
 import { RssPluginSettings } from './rss-plugin-settings';
 import { RssSource } from './rss-source';
 import { BbcNewsSource } from './sources/bbc-news-source';
+import { GenericSource } from './sources/generic-source';
 
 export class RssPlugin implements CardWidgetDisplayable {
   public static id = 'core/rss';
 
   private readonly cacheKey: string;
-  private readonly sources: { [key: string]: RssSource };
+  private readonly sources: { [key: string]: any };
 
   constructor(
     private readonly settings: RssPluginSettings,
@@ -21,7 +22,8 @@ export class RssPlugin implements CardWidgetDisplayable {
 
     // Store source ID => source impl
     this.sources = {
-      [BbcNewsSource.id]: new BbcNewsSource()
+      [BbcNewsSource.id]: BbcNewsSource,
+      [GenericSource.id]: GenericSource
     };
   }
 
@@ -46,7 +48,13 @@ export class RssPlugin implements CardWidgetDisplayable {
     let items = await this.cacheService.get(this.cacheKey);
     if (!items) {
       console.log(`No cache found for: ${this.cacheKey}`);
-      items = await this.sources[this.settings.sourceId]?.fetchItems();
+      const classDef = this.sources[this.settings.sourceId];
+      if (!classDef) {
+        console.error(`No RSS source found for ${this.settings.sourceId}`);
+        return [];
+      }
+      const source = new classDef(this.settings) as RssSource;
+      items = await source.fetchItems();
 
       await this.cacheService.set(this.cacheKey, items);
     }
