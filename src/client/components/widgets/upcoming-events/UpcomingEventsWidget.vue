@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import router from '@/router';
 import moment from 'moment';
-import type { FullCalendarEvent } from 'src/common/dto/full-calendar-event';
 import type { BucketedEvents } from 'src/common/dto/home-screen-response';
 import Month from '../../Month.vue';
 

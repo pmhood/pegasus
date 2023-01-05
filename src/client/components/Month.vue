@@ -15,13 +15,11 @@ for (let i = 0; i < numWeeks * 7; i++) {
 <template>
   <div class="flex items-center justify-end">
     <div class="max-w-sm w-full">
-      <div class="md:p-8 p-5 rounded-t">
+      <div class="p-4 rounded-t">
         <div class="flex items-center justify-center">
-          <span
-            tabindex="0"
-            class="focus:outline-none text-2xl dark:text-gray-100 text-gray-800"
-            >{{ moment().format('MMMM yy') }}</span
-          >
+          <span tabindex="0" class="text-white/50">{{
+            moment().format('MMMM yy')
+          }}</span>
         </div>
         <div class="flex pt-4 overflow-x-auto">
           <table class="w-full">
@@ -29,13 +27,11 @@ for (let i = 0; i < numWeeks * 7; i++) {
               <tr>
                 <th v-for="idx in 7">
                   <div class="w-full flex justify-center">
-                    <p
-                      class="text-xs font-medium text-center text-gray-800 dark:text-gray-100"
-                    >
+                    <p class="text-xs font-semibold text-center text-white/50">
                       {{
                         moment()
                           .day(idx - 1)
-                          .format('ddd')
+                          .format('dd')
                           .toUpperCase()
                       }}
                     </p>
@@ -52,10 +48,10 @@ for (let i = 0; i < numWeeks * 7; i++) {
                   )"
                 >
                   <div
-                    class="px-2 py-2 cursor-pointer flex w-full justify-center"
+                    class="px-1 py-1 cursor-pointer flex w-full justify-center"
                   >
                     <p
-                      class="text-base text-white dark:text-gray-100 font-medium"
+                      class="text-xs text-white"
                       :class="{
                         nonCurrentMonth: item.month() !== moment().month(),
                         today: moment(item).isSame(moment(), 'd')
@@ -76,12 +72,12 @@ for (let i = 0; i < numWeeks * 7; i++) {
 
 <style scoped>
 .nonCurrentMonth {
-  @apply text-slate-200/25;
+  @apply text-slate-200/50;
 }
 /* .today {
   @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 focus:bg-indigo-500 hover:bg-indigo-500 text-base w-8 h-8 flex items-center justify-center font-medium text-white bg-indigo-700 rounded-full;
 } */
 .today {
-  @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white focus:bg-white hover:bg-indigo-500 text-base w-8 h-8 flex items-center justify-center font-medium text-cyan-400 bg-white rounded-full;
+  @apply w-6 h-6 flex items-center justify-center font-medium text-cyan-400 bg-white rounded-full;
 }
 </style>

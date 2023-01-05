@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import moment from 'moment';
-import type { Photo } from 'src/common/dto/home-screen-response';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 export interface ForYouWidgetData {
   imageUrl?: string;
@@ -18,12 +17,12 @@ setInterval(() => {
   <div class="bg-image bg-cover flex flex-col">
     <div class="p-10 mt-auto w-full bg-black/5">
       <div
-        class="text-4xl font-light text-white [text-shadow:0_4px_8px_rgba(0,0,0,0.8)]"
+        class="text-xl font-light text-white [text-shadow:0_4px_8px_rgba(0,0,0,0.8)]"
       >
         {{ currentDateTime.format('dddd, MMMM DD') }}
       </div>
       <div
-        class="text-8xl font-bold text-white [text-shadow:0_4px_8px_rgba(0,0,0,0.8)]"
+        class="text-7xl font-bold text-white [text-shadow:0_4px_8px_rgba(0,0,0,0.8)]"
       >
         <span>{{ currentDateTime.format('h') }}</span
         ><span class="animate-pulse-colon">:</span
