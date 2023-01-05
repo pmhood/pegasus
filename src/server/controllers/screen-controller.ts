@@ -1,4 +1,5 @@
 import { ScreenResponseData } from '../../common/dto/screen-response-data';
+import { Version } from '../config/config-service';
 import { LayoutData, LayoutFactory } from '../layouts/layout-factory';
 
 export class ScreenController {
@@ -8,7 +9,8 @@ export class ScreenController {
     const layout = LayoutFactory.make(this.settings.layout);
     const responseData = await layout?.getResponseData();
     return {
-      ...responseData
+      ...responseData,
+      version: Version
     } as ScreenResponseData;
   }
 }

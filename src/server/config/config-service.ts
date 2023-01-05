@@ -4,12 +4,6 @@ import { EnvironmentVar, getEnvVar } from './environment-var';
 
 export class ConfigService {
   private config: PegasusConfig;
-  public readonly version: string;
-
-  constructor() {
-    const pkg = require('../../package.json');
-    this.version = pkg.version;
-  }
 
   public loadConfig() {
     const filepath = getEnvVar(EnvironmentVar.PegasusConfigFile);
@@ -30,4 +24,5 @@ export class ConfigService {
   }
 }
 
-// export const Config = new ConfigService();
+const pkg = require('../../package.json');
+export const Version = pkg.version;
