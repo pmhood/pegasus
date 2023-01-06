@@ -60,7 +60,7 @@ import { RouterView } from 'vue-router';
 <style>
 .loading-bg {
   @apply bg-cover;
-  background-image: url('images/hans-peter-traunig-MwNu9o6u9Gk-unsplash.jpg');
+  background-image: url('/images/hans-peter-traunig-MwNu9o6u9Gk-unsplash.jpg');
 }
 
 .v-enter-active,
