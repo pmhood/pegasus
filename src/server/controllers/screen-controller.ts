@@ -10,6 +10,7 @@ export class ScreenController {
     const responseData = await layout?.getResponseData();
     return {
       ...responseData,
+      refreshInterval: this.settings.layout.settings.refreshInterval,
       version: Version
     } as ScreenResponseData;
   }
@@ -17,5 +18,4 @@ export class ScreenController {
 
 export interface ScreenData {
   layout: LayoutData;
-  refreshInterval: number;
 }
