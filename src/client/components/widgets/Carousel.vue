@@ -13,7 +13,7 @@ export interface InternalCarouselWidgetResponseData {
 const props = defineProps<InternalCarouselWidgetResponseData>();
 
 const itemIndex = ref(0);
-let intervalId: number;
+let intervalId: any;
 
 onMounted(() => {
   intervalId = setInterval(() => {
@@ -25,7 +25,7 @@ onMounted(() => {
 onDeactivated(() => {
   if (intervalId) {
     clearInterval(intervalId);
-    intervalId = -1;
+    intervalId = null;
   }
 });
 </script>
