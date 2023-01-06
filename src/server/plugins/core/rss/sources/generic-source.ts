@@ -3,8 +3,6 @@ import { RssItem } from '../../../../../common/dto/rss-item';
 import { RssSource } from '../rss-source';
 import { RssPluginSettings } from '../rss-plugin-settings';
 
-const numItems = 3;
-
 type CustomFeed = {};
 type CustomItem = { imageUrl: string; description: string };
 
@@ -22,8 +20,7 @@ export class GenericSource implements RssSource {
       });
       const feed = await parser.parseURL(this.settings.url);
 
-      const topItems = feed.items.slice(0, numItems);
-      console.log(topItems);
+      const topItems = feed.items; //.slice(0, this.settings.limit ?? numItems);
       const rssItems = topItems.map((item) => {
         return {
           title: item.title,

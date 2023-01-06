@@ -1,7 +1,7 @@
 import { CardWidgetResponseData } from './card-widget-response-data';
 
 export interface CardWidgetDisplayable {
-  getCardWidgetResponseData(): Promise<CardWidgetResponseData | undefined>;
+  getCardWidgetResponseData(): Promise<CardWidgetResponseData[] | undefined>;
 }
 
 export function isCardWidgetDisplayable(

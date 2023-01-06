@@ -3,19 +3,19 @@ import * as RssParser from 'rss-parser';
 import * as cheerio from 'cheerio';
 import { RssItem } from '../../../../../common/dto/rss-item';
 import { RssSource } from '../rss-source';
-
-const feedUrl = 'http://feeds.bbci.co.uk/news/rss.xml';
-const numItems = 3;
+import { RssPluginSettings } from '../rss-plugin-settings';
 
 export class BbcNewsSource implements RssSource {
   public static id = 'bbc';
 
+  constructor(private readonly settings: RssPluginSettings) {}
+
   public async fetchItems(): Promise<RssItem[]> {
     const parser: RssParser = new RssParser();
-    const feed = await parser.parseURL(feedUrl);
+    const feed = await parser.parseURL(this.settings.url);
 
-    const topItems = feed.items.slice(0, numItems);
-    console.log(topItems);
+    const topItems = feed.items; //.slice(0, this.settings.limit ?? numItems);
+    // console.log(topItems);
     const rssItems = await Promise.all(
       topItems.map(async (item) => {
         if (!item.link || !item.guid) {

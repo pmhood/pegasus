@@ -13,7 +13,7 @@ const imageUrl = ref(`url('${props.imageUrl}')`);
 </script>
 
 <template>
-  <div class="bg-cover bg-center bg-image flex flex-col">
+  <div class="bg-cover bg-center bg-image flex flex-col h-full">
     <div
       v-if="props.title"
       class="p-4 pt-16 text-sm font-semibold text-white mt-auto w-full bg-gradient-to-t from-black via-black/75 to-transparent items-end"

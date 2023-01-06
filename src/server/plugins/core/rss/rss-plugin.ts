@@ -28,7 +28,7 @@ export class RssPlugin implements CardWidgetDisplayable {
   }
 
   public async getCardWidgetResponseData(): Promise<
-    CardWidgetResponseData | undefined
+    CardWidgetResponseData[] | undefined
   > {
     const items = await this.fetchItems();
     if (!items) {
@@ -36,12 +36,16 @@ export class RssPlugin implements CardWidgetDisplayable {
       return;
     }
 
-    return {
-      title: items[0].title,
-      description: items[0].description,
-      imageUrl: items[0].imageUrl,
-      linkUrl: ''
-    } as CardWidgetResponseData;
+    const slicedItems = items.slice(0, this.settings.limit ?? 3);
+
+    return slicedItems.map((item) => {
+      return {
+        title: item.title,
+        description: item.description,
+        imageUrl: item.imageUrl,
+        linkUrl: ''
+      } as CardWidgetResponseData;
+    });
   }
 
   private async fetchItems(): Promise<RssItem[]> {
@@ -55,7 +59,6 @@ export class RssPlugin implements CardWidgetDisplayable {
       }
       const source = new classDef(this.settings) as RssSource;
       items = await source.fetchItems();
-
       await this.cacheService.set(this.cacheKey, items);
     }
 

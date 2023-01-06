@@ -28,7 +28,7 @@ export class PhotoPlugin implements CardWidgetDisplayable {
   }
 
   public async getCardWidgetResponseData(): Promise<
-    CardWidgetResponseData | undefined
+    CardWidgetResponseData[] | undefined
   > {
     const items = await this.fetchItems();
     if (!items) {
@@ -36,11 +36,13 @@ export class PhotoPlugin implements CardWidgetDisplayable {
       return;
     }
 
-    return {
-      //title: items[0].title,
-      // description: items[0].photographer,
-      imageUrl: items[0].url
-    } as CardWidgetResponseData;
+    return [
+      {
+        //title: items[0].title,
+        // description: items[0].photographer,
+        imageUrl: items[0].url
+      }
+    ] as CardWidgetResponseData[];
   }
 
   private async fetchItems(): Promise<PhotoItem[]> {
