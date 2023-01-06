@@ -9,7 +9,7 @@ import { RouterView } from 'vue-router';
         <KeepAlive>
           <Suspense>
             <!-- main content -->
-            <component :is="Component"></component>
+            <component :is="Component" class="w-screen h-screen"></component>
 
             <!-- loading state -->
             <template #fallback>

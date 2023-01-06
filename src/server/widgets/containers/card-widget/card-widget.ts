@@ -24,8 +24,8 @@ export class CardWidget implements Widget {
     const data = await this.plugin?.getCardWidgetResponseData();
     console.log(`CardWidget response: ${JSON.stringify(data)}`);
     if (data) {
-      data.componentName = CardWidget.id;
+      data[0].componentName = CardWidget.id;
     }
-    return data;
+    return data?.[0];
   }
 }
