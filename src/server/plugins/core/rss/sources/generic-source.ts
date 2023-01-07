@@ -25,7 +25,8 @@ export class GenericSource implements RssSource {
         return {
           title: item.title,
           description: item.description,
-          imageUrl: item.imageUrl
+          imageUrl: item.imageUrl,
+          link: item.link
         } as RssItem;
       });
       return rssItems;
