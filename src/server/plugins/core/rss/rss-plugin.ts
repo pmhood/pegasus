@@ -6,7 +6,6 @@ import { RssPluginSettings } from './rss-plugin-settings';
 import { RssSource } from './rss-source';
 import { BbcNewsSource } from './sources/bbc-news-source';
 import { GenericSource } from './sources/generic-source';
-import * as moment from 'moment';
 
 export class RssPlugin implements CardWidgetDisplayable {
   public static id = 'core/rss';
