@@ -2,6 +2,9 @@ FROM node:18-alpine
 
 WORKDIR /tmp/pegasus
 
+RUN apk update && apk add tzdata && \
+  cp /usr/share/zoneinfo/America/New_York /etc/localtime
+
 COPY index.html *.json *.js *.ts ./
 COPY src src/
 COPY public public/

@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import {
   CalendarPluginSettings,
   CalendarSourceType
@@ -41,7 +41,7 @@ export class CalendarPlugin
     }
 
     return {
-      calendarEvents: events
+      events: events
     } as CalendarWidgetResponseData;
   }
 
@@ -55,8 +55,10 @@ export class CalendarPlugin
       return;
     }
 
+    const bucketEvents = this.bucketEvents(events);
+
     return {
-      events: this.bucketEvents(events)
+      events: bucketEvents
     } as UpcomingEventsWidgetResponseData;
   }
 
@@ -86,8 +88,8 @@ export class CalendarPlugin
     const today = moment().startOf('d');
 
     const todayEvents = events.filter((event) => {
-      const start = moment(event.start).startOf('d');
-      const dayDiff = start.diff(today, 'days');
+      const start = moment(event.start).tz('America/New_York').startOf('d');
+      const dayDiff = start.tz('America/New_York').diff(today, 'days');
 
       // Return today and tomorrow
       return dayDiff >= 0 && dayDiff < 2;
