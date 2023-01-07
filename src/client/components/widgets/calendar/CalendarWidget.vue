@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import '@fullcalendar/core/vdom'; // solves problem with Vite
+// import '@fullcalendar/core/vdom'; // solves problem with Vite
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import iCalendarPlugin from '@fullcalendar/icalendar';
 import interactionPlugin from '@fullcalendar/interaction';
-import type { CalendarOptions, EventClickArg } from '@fullcalendar/common';
+import type { CalendarOptions, EventClickArg } from '@fullcalendar/core';
 import { onMounted, ref } from 'vue';
 import type { CalendarApi, EventContentArg } from '@fullcalendar/core';
 import axios from 'axios';
@@ -39,8 +39,6 @@ const props = defineProps<InternalCalendarWidgetResponseData>();
 
 const calendar = ref<any>(null);
 let calendarApi: CalendarApi | undefined = undefined;
-
-// const events = await refreshCalendar();
 
 const currentlyShownDate = ref(moment());
 const currentTime = ref(moment().format('h:mm a'));
@@ -77,7 +75,7 @@ const scheduleCalendarOptions: CalendarOptions = {
     div.innerHTML = `<span class=''>${dayOfWeek}</span>`;
 
     if (moment(arg.date).isSame(moment(), 'd')) {
-      div.innerHTML += ` <span class='font-semibold rounded-full text-white bg-blue-600 px-2 py-2 w-8 h-8'>${dayNumber}</span>`;
+      div.innerHTML += ` <span class='font-semibold rounded-full text-white bg-blue-600 px-2 py-2'>${dayNumber}</span>`;
     } else {
       div.innerHTML += ` <span class='text-slate-900 font-semibold'>${dayNumber}</span>`;
     }
@@ -378,13 +376,23 @@ function setView(type: ViewType) {
         </h4>
       </div>
     </div>
-    <div id="calendar-container">
-      <FullCalendar :options="scheduleCalendarOptions" />
-    </div>
+    <!-- <div id="calendar-container"> -->
+    <FullCalendar
+      class="calendar"
+      ref="calendar"
+      :options="scheduleCalendarOptions"
+    />
+    <!-- </div> -->
   </div>
 </template>
 
 <style>
+.navbar {
+  z-index: 100;
+}
+.calendar {
+  z-index: 0;
+}
 #calendar-container {
   /* position: fixed;
   top: 4.5rem;
@@ -455,7 +463,7 @@ function setView(type: ViewType) {
 }
 
 .fc-timegrid-col.fc-day-today {
-  @apply bg-red-50  !important;
+  @apply bg-sky-50  !important;
 }
 
 /* .fc-timegrid-col-frame {
