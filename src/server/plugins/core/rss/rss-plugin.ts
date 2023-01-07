@@ -6,6 +6,7 @@ import { RssPluginSettings } from './rss-plugin-settings';
 import { RssSource } from './rss-source';
 import { BbcNewsSource } from './sources/bbc-news-source';
 import { GenericSource } from './sources/generic-source';
+import * as moment from 'moment';
 
 export class RssPlugin implements CardWidgetDisplayable {
   public static id = 'core/rss';
@@ -18,7 +19,7 @@ export class RssPlugin implements CardWidgetDisplayable {
     private readonly cacheService: CacheService
   ) {
     console.log(`RSSPlugin settings: ${JSON.stringify(settings)}`);
-    this.cacheKey = `${RssPlugin.id}-${settings.sourceId}`;
+    this.cacheKey = `${RssPlugin.id}-${settings.id}`;
 
     // Store source ID => source impl
     this.sources = {
@@ -52,16 +53,24 @@ export class RssPlugin implements CardWidgetDisplayable {
     let items = await this.cacheService.get(this.cacheKey);
     if (!items) {
       console.log(`No cache found for: ${this.cacheKey}`);
-      const classDef = this.sources[this.settings.sourceId];
+      const classDef = this.sources[this.settings.sourceType];
       if (!classDef) {
-        console.error(`No RSS source found for ${this.settings.sourceId}`);
+        console.error(`No RSS source found for ${this.settings.sourceType}`);
         return [];
       }
       const source = new classDef(this.settings) as RssSource;
       items = await source.fetchItems();
-      await this.cacheService.set(this.cacheKey, items);
+
+      let expiryDate: moment.Moment | undefined;
+      if (this.settings.cacheTtl) {
+        expiryDate = moment().add(this.settings.cacheTtl, 'ms');
+      }
+      await this.cacheService.set(this.cacheKey, items, expiryDate);
     }
 
+    console.log(
+      `RSS Plugin: Found ${items?.length} items for ${this.cacheKey}`
+    );
     return items;
   }
 }
