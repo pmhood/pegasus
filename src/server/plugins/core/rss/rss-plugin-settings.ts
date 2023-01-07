@@ -1,5 +1,7 @@
 export interface RssPluginSettings {
-  sourceId: string;
+  sourceType: string;
+  id: string;
   url: string;
   limit: number;
+  cacheTtl: number;
 }

@@ -57,7 +57,6 @@ export class PhotoPlugin implements CardWidgetDisplayable {
     }
 
     if (this.settings.random) {
-      console.log('picking random element');
       items = [randomElement(items)];
     }
 
