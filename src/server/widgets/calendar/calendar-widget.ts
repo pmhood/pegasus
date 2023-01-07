@@ -29,7 +29,7 @@ export class CalendarWidget implements Widget {
     // console.log(`CalendarWidget response: ${JSON.stringify(data)}`);
     if (data) {
       data.componentName = CalendarWidget.id;
-      data.calendarEvents = data.calendarEvents.map((e) => {
+      data.events = data.events.map((e) => {
         const color = e.sourceId
           ? this.settings.calendarColors[e.sourceId]
           : 'grey';

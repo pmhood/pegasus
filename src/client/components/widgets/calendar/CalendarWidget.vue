@@ -25,7 +25,7 @@ import type { FullCalendarEvent } from 'src/common/dto/full-calendar-event';
 
 export interface InternalCalendarWidgetResponseData {
   componentName: string;
-  calendarEvents: FullCalendarEvent[];
+  events: FullCalendarEvent[];
 }
 
 enum ViewType {
@@ -60,7 +60,7 @@ const scheduleCalendarOptions: CalendarOptions = {
   },
   scrollTime: moment().subtract(1, 'h').format('HH:MM:00'),
   height: '100%',
-  events: props.calendarEvents,
+  events: props.events,
   eventTimeFormat: {
     hour: 'numeric',
     minute: '2-digit',
@@ -114,7 +114,7 @@ async function refreshCalendar(): Promise<FullCalendarEvent[]> {
   //   }
 
   //   return events;
-  return props.calendarEvents;
+  return props.events;
 }
 
 // const monthCalendarOptions: CalendarOptions = {
@@ -276,7 +276,7 @@ function setView(type: ViewType) {
 </script>
 
 <template>
-  <div class="flex flex-col w-full">
+  <div class="flex flex-col w-full bg-white">
     <div class="navbar bg-slate-100 border-b-1 border-slate-500">
       <div class="navbar-start divide-x-2 divde-black">
         <button class="px-4" @click="goBack()">
