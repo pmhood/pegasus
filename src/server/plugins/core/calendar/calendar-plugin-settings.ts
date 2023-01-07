@@ -6,6 +6,7 @@ interface CalendarSource {
   id: string;
   url: string;
   type: CalendarSourceType;
+  cacheTtl: number;
 }
 
 export enum CalendarSourceType {

@@ -61,11 +61,7 @@ export class RssPlugin implements CardWidgetDisplayable {
       const source = new classDef(this.settings) as RssSource;
       items = await source.fetchItems();
 
-      let expiryDate: moment.Moment | undefined;
-      if (this.settings.cacheTtl) {
-        expiryDate = moment().add(this.settings.cacheTtl, 'ms');
-      }
-      await this.cacheService.set(this.cacheKey, items, expiryDate);
+      await this.cacheService.set(this.cacheKey, items, this.settings.cacheTtl);
     }
 
     console.log(

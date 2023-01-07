@@ -74,8 +74,8 @@ export class CalendarPlugin
           source.id,
           source.url
         );
-        // TODO: Disable cache for cal events for now
-        // await this.cacheService.set(cacheKey, events);
+
+        await this.cacheService.set(cacheKey, events, source.cacheTtl);
       }
 
       allEvents.push(...events);
