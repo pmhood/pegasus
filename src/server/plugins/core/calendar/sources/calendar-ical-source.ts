@@ -27,7 +27,7 @@ export class CalendarIcalSource implements CalendarSource {
         }
       }
     } catch (err) {
-      console.error(err);
+      console.error(err.message);
     }
 
     return events;

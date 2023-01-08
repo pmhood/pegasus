@@ -3,6 +3,7 @@ import axios from 'axios';
 import { componentClassFromString } from '@/services/component-map';
 import type { ScreenResponseData } from 'src/common/dto/screen-response-data';
 import { ref, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue';
+import router from '../router';
 
 let screenResponse = ref<ScreenResponseData>();
 let intervalId: any;
@@ -10,8 +11,20 @@ let intervalId: any;
 await refreshScreen();
 
 async function refreshScreen() {
-  const response = await axios.get('/api/screens/home');
+  const routeName = router.currentRoute.value.name;
+
+  console.log(`Refresh screen ${routeName?.toString()}`);
+  const response = await axios.get(`/api/screens/${routeName?.toString()}`);
   screenResponse.value = response.data as ScreenResponseData;
+
+  if (screenResponse.value?.refreshInterval) {
+    console.log(`Refreshing in ${screenResponse.value.refreshInterval}ms`);
+    intervalId = setTimeout(() => {
+      refreshScreen();
+    }, screenResponse.value.refreshInterval);
+  } else {
+    console.warn(`No refresh interval found`);
+  }
 }
 
 onMounted(() => {
@@ -22,13 +35,6 @@ onUnmounted(() => {
 });
 onActivated(() => {
   console.log(`onActivated = ScreenView`);
-
-  if (screenResponse.value?.refreshInterval) {
-    console.log(`Refreshing in ${screenResponse.value.refreshInterval}ms`);
-    intervalId = setInterval(() => {
-      refreshScreen();
-    }, screenResponse.value.refreshInterval);
-  }
 });
 onDeactivated(() => {
   console.log(`onDeactivated = ScreenView`);

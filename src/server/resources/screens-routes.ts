@@ -13,7 +13,7 @@ export class ScreensRoutes {
 
         res.send(response);
       } catch (e) {
-        console.error(e);
+        console.error(e.message);
         res.status(500).send({
           message: e.message
         });

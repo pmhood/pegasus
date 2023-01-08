@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
+import router from './router';
 </script>
 
 <template>
-  <RouterView v-slot="{ Component }">
+  <RouterView
+    v-slot="{ Component }"
+    :key="router.currentRoute.value.name?.toString() ?? ''"
+  >
     <template v-if="Component">
       <!-- <Transition mode="out-in"> -->
       <KeepAlive>
