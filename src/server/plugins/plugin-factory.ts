@@ -1,6 +1,4 @@
 import { CacheService } from '../cache/cache-service';
-// import { PhotoPlugin } from './core/photos/photo-plugin';
-// import { RssPlugin } from './core/rss/rss-plugin';
 
 export class PluginFactory {
   public static cacheService: CacheService;
