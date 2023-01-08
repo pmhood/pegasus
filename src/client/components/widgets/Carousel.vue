@@ -17,7 +17,6 @@ let intervalId: any;
 
 onMounted(() => {
   intervalId = setInterval(() => {
-    console.log('transition');
     itemIndex.value = (itemIndex.value + 1) % props.items.length;
   }, props.transitionTime);
 });
