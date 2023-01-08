@@ -1,6 +1,6 @@
 {
   "name": "pegasus",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "private": true,
   "scripts": {
     "prod:build": "npm run client:build && npm run server:build",
