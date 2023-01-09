@@ -4,6 +4,7 @@ import { CacheService } from '../../cache/cache-service';
 import { CardWidgetDisplayable } from '../../widgets/containers/card-widget/card-widget-displayable';
 import { CardWidgetResponseData } from '../../widgets/containers/card-widget/card-widget-response-data';
 import { MealViewerPluginSettings } from './meal-viewer-plugin-settings';
+import { CardWidgetType } from '../../../common/dto/card-widget-type';
 
 const api = 'https://api.mealviewer.com/api/v4/school/{school}/{date}/{date}/0';
 
@@ -33,6 +34,7 @@ export class MealViewerPlugin implements CardWidgetDisplayable {
 
     return [
       {
+        type: CardWidgetType.TextOverlay,
         title: Array.from(set).join(', ')
       }
     ] as CardWidgetResponseData[];

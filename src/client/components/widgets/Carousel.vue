@@ -30,7 +30,7 @@ onDeactivated(() => {
 </script>
 
 <template>
-  <div class="bg-yellow-500 grid">
+  <div class="grid">
     <div
       v-for="[i, item] of props.items.entries()"
       :key="i"
