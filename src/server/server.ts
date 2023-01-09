@@ -14,6 +14,7 @@ import {
 import { CalendarPlugin } from './plugins/core/calendar/calendar-plugin';
 import { PhotoPlugin } from './plugins/core/photos/photo-plugin';
 import { RssPlugin } from './plugins/core/rss/rss-plugin';
+import { MealViewerPlugin } from './plugins/meal-viewer/meal-viewer-plugin';
 import { PluginFactory } from './plugins/plugin-factory';
 import { ScreensRoutes } from './resources/screens-routes';
 
@@ -26,6 +27,7 @@ class Server {
     PluginFactory.register(RssPlugin.id, RssPlugin);
     PluginFactory.register(PhotoPlugin.id, PhotoPlugin);
     PluginFactory.register(CalendarPlugin.id, CalendarPlugin);
+    PluginFactory.register(MealViewerPlugin.id, MealViewerPlugin);
   }
 
   public async setup() {

@@ -1,3 +1,4 @@
+import { CardWidgetType } from '../../../../common/dto/card-widget-type';
 import { PluginFactory } from '../../../plugins/plugin-factory';
 import { Widget } from '../../widget';
 import { CardWidget } from '../card-widget/card-widget';
@@ -36,7 +37,10 @@ export class CarouselWidget implements Widget {
           //   `CarouselWidget-CardWidget response: ${JSON.stringify(data)}`
           // );
           if (data) {
-            data.forEach((item) => (item.componentName = CardWidget.id));
+            data.forEach((item) => {
+              item.componentName = CardWidget.id;
+              item.type = CardWidgetType.ImageWithText;
+            });
           }
           return data;
         })
