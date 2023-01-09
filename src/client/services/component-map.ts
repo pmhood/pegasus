@@ -8,6 +8,7 @@ import Card from '@/components/widgets/Card.vue';
 import UpcomingEventsWidget from '@/components/widgets/upcoming-events/UpcomingEventsWidget.vue';
 import SingleLayout from '@/components/layouts/SingleLayout.vue';
 import Carousel from '../components/widgets/Carousel.vue';
+import Todo from '../components/widgets/Todo.vue';
 
 export const componentClasses: { [key: string]: any } = {
   // Layouts
@@ -19,7 +20,8 @@ export const componentClasses: { [key: string]: any } = {
   upcomingEvents: UpcomingEventsWidget,
   forYou: ForYouWidget,
   calendar: CalendarWidgetVue,
-  carousel: Carousel
+  carousel: Carousel,
+  todo: Todo
   // PhotoOfTheDayWidget: PhotoOfTheDayWidgetVue,
   // CalendarWidget: CalendarWidgetVue,
   // ForYouWidget: ForYouWidget,

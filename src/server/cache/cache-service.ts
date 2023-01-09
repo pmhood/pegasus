@@ -18,17 +18,16 @@ export class CacheService {
   }
 
   public async set(id: string, value: any, ttl?: number) {
-    let expiryDate: moment.Moment | undefined;
-    if (ttl) {
-      expiryDate = moment().add(ttl, 'ms');
+    if (!ttl) {
+      ttl = 0;
     }
 
+    const expiryDate = moment().add(ttl, 'ms');
+
     console.log(`Cache set for ${id}, expiry at ${expiryDate}`);
-    if (expiryDate) {
-      this.expiry[id] = expiryDate;
-    } else {
-      delete this.expiry[id];
-    }
+    delete this.expiry[id];
+    this.expiry[id] = expiryDate;
+
     this.data[id] = value;
   }
 }
