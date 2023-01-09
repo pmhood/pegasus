@@ -2,6 +2,7 @@ import { CalendarWidget } from './calendar/calendar-widget';
 import { CardWidget } from './containers/card-widget/card-widget';
 import { CarouselWidget } from './containers/carousel-widget/carousel-widget';
 import { ForYouWidget } from './for-you/for-you-widget';
+import { TodoWidget } from './todo/todo-widget';
 import { UpcomingEventsWidget } from './upcoming-events/upcoming-events-widget';
 import { Widget } from './widget';
 
@@ -18,6 +19,8 @@ export class WidgetFactory {
         return new CalendarWidget(widgetData.settings);
       case CarouselWidget.id:
         return new CarouselWidget(widgetData.settings);
+      case TodoWidget.id:
+        return new TodoWidget(widgetData.settings);
     }
 
     console.error(`Cannot find widget: ${widgetData.widgetId}`);

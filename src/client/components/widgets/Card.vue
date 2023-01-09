@@ -17,7 +17,7 @@ const imageUrl = ref(`url('${props.imageUrl}')`);
 <template>
   <div
     v-if="props.type === CardWidgetType.ImageWithText"
-    class="bg-cover bg-center bg-image flex flex-col h-full"
+    class="bg-cover bg-center bg-image flex flex-col h-full bg-gradient-to-br from-emerald-700 to-emerald-50"
   >
     <div
       v-if="props.title"

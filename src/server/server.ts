@@ -16,7 +16,9 @@ import { PhotoPlugin } from './plugins/core/photos/photo-plugin';
 import { RssPlugin } from './plugins/core/rss/rss-plugin';
 import { MealViewerPlugin } from './plugins/meal-viewer/meal-viewer-plugin';
 import { PluginFactory } from './plugins/plugin-factory';
+import { TodoPlugin } from './plugins/todo/todo-plugin';
 import { ScreensRoutes } from './resources/screens-routes';
+import { TodoRoutes } from './resources/todo-routes';
 
 const PORT = 3000;
 
@@ -28,6 +30,7 @@ class Server {
     PluginFactory.register(PhotoPlugin.id, PhotoPlugin);
     PluginFactory.register(CalendarPlugin.id, CalendarPlugin);
     PluginFactory.register(MealViewerPlugin.id, MealViewerPlugin);
+    PluginFactory.register(TodoPlugin.id, TodoPlugin);
   }
 
   public async setup() {
@@ -66,6 +69,7 @@ class Server {
     PluginFactory.cacheService = cacheService;
 
     ScreensRoutes.addRoutes(this.app, config);
+    TodoRoutes.addRoutes(this.app);
   }
 
   public listen() {

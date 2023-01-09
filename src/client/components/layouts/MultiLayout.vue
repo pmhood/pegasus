@@ -31,14 +31,14 @@ const props = defineProps<MultiLayoutResponseData>();
       ></component>
       <div class="h-auto grid gap-2 grid-cols-2">
         <component
-          class="rounded-sm"
+          class="rounded-md drop-shadow-md"
           v-bind:is="
             componentClassFromString(props.rightBottomLeft.componentName ?? '')
           "
           v-bind="props.rightBottomLeft"
         ></component>
         <component
-          class="rounded-sm"
+          class="rounded-md drop-shadow-md"
           v-bind:is="
             componentClassFromString(props.rightBottomRight.componentName ?? '')
           "

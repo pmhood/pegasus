@@ -2,6 +2,7 @@ export enum EnvironmentVar {
   Enviroment = 'ENVIRONMENT',
   PegasusConfigFile = 'PEGASUS_CONFIG_FILE',
   PexelsApiKey = 'PEXELS_API_KEY',
+  TodoistApiToken = 'TODOIST_API_TOKEN',
   UnsplashAccessKey = 'UNSPLASH_ACCESS_KEY'
 }
 
