@@ -56,7 +56,7 @@ export class MealViewerPlugin implements CardWidgetDisplayable {
   }
 
   private async fetchLunchItems(): Promise<string[]> {
-    const date = moment().format('DD-MM-yyyy');
+    const date = moment().format('MM-DD-yyyy');
     const url = api
       .replace('{school}', this.settings.schoolName)
       .replaceAll('{date}', date);
