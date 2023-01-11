@@ -31,7 +31,7 @@ function refreshCalendar() {
   }
 
   const tomorrow = today.value.clone().startOf('d').add(1, 'd');
-  const interval = tomorrow.diff(today.value, 'ms') + 300000;
+  const interval = tomorrow.diff(today.value.clone(), 'ms') + 300000;
   intervalId = setTimeout(() => {
     refreshCalendar();
   }, interval);
@@ -82,7 +82,7 @@ function refreshCalendar() {
                       class="text-xs text-white"
                       :class="{
                         nonCurrentMonth: item.month() !== today.month(),
-                        today: item.isSame(today, 'd')
+                        today: item.isSame(today.clone(), 'd')
                       }"
                     >
                       {{ item.format('D') }}
