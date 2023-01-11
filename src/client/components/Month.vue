@@ -1,14 +1,40 @@
 <script setup lang="ts">
-import moment, { type Moment } from 'moment';
-import { ref } from 'vue';
+import moment from 'moment';
+import { onMounted, onUnmounted, ref } from 'vue';
 
-const startWeek = moment().startOf('month').week();
-const endWeek = moment().endOf('month').startOf('day').week();
-const numWeeks = endWeek - startWeek + 1;
+let intervalId: any = undefined;
+let today = ref<moment.Moment>(moment());
 
-const calendarDates = [] as Moment[];
-for (let i = 0; i < numWeeks * 7; i++) {
-  calendarDates.push(moment().startOf('month').startOf('week').add(i, 'd'));
+let numWeeks = ref(0);
+let calendarDates = ref<moment.Moment[]>([]);
+
+onMounted(() => {
+  refreshCalendar();
+});
+
+onUnmounted(() => {
+  clearInterval(intervalId);
+  intervalId = undefined;
+});
+
+function refreshCalendar() {
+  today.value = moment();
+  const startWeek = today.value.clone().startOf('month').week();
+  const endWeek = today.value.clone().endOf('month').startOf('day').week();
+  numWeeks.value = endWeek - startWeek + 1;
+
+  calendarDates.value = [];
+  for (let i = 0; i < numWeeks.value * 7; i++) {
+    calendarDates.value.push(
+      today.value.clone().startOf('month').startOf('week').add(i, 'd')
+    );
+  }
+
+  const tomorrow = today.value.clone().startOf('d').add(1, 'd');
+  const interval = tomorrow.diff(today.value, 'ms') + 300000;
+  intervalId = setTimeout(() => {
+    refreshCalendar();
+  }, interval);
 }
 </script>
 
@@ -17,19 +43,20 @@ for (let i = 0; i < numWeeks * 7; i++) {
     <div class="max-w-sm w-full">
       <div class="p-4 rounded-t">
         <div class="flex items-center justify-center">
-          <span tabindex="0" class="text-white/50">{{
-            moment().format('MMMM yy')
-          }}</span>
+          <span tabindex="0" class="text-white/50"
+            >{{ today.format('MMMM yy') }}
+          </span>
         </div>
         <div class="flex pt-4 overflow-x-auto">
           <table class="w-full">
             <thead>
               <tr>
-                <th v-for="idx in 7">
+                <th v-for="idx in 7" :key="idx">
                   <div class="w-full flex justify-center">
                     <p class="text-xs font-semibold text-center text-white/50">
                       {{
-                        moment()
+                        today
+                          .clone()
                           .day(idx - 1)
                           .format('dd')
                           .toUpperCase()
@@ -40,12 +67,13 @@ for (let i = 0; i < numWeeks * 7; i++) {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="weekNum in numWeeks">
+              <tr v-for="weekNum in numWeeks" :key="weekNum">
                 <td
                   v-for="(item, index) in calendarDates.slice(
                     (weekNum - 1) * 7,
                     (weekNum - 1) * 7 + 7
                   )"
+                  :key="index"
                 >
                   <div
                     class="px-1 py-1 cursor-pointer flex w-full justify-center"
@@ -53,8 +81,8 @@ for (let i = 0; i < numWeeks * 7; i++) {
                     <p
                       class="text-xs text-white"
                       :class="{
-                        nonCurrentMonth: item.month() !== moment().month(),
-                        today: moment(item).isSame(moment(), 'd')
+                        nonCurrentMonth: item.month() !== today.month(),
+                        today: item.isSame(today, 'd')
                       }"
                     >
                       {{ item.format('D') }}
