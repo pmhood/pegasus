@@ -54,7 +54,9 @@ async function doMarkCompleted(id: any) {
 </script>
 
 <template>
-  <div class="overflow-auto h-full bg-slate-50 p-4">
+  <div
+    class="overflow-auto h-full bg-gradient-to-br from-slate-50 via-slate-100 to-slate-500 p-4"
+  >
     <div class="flex flex-col h-full">
       <div class="text-slate-700 text-lg font-semibold">To Do List</div>
       <div v-if="items.length > 0">
@@ -75,7 +77,7 @@ async function doMarkCompleted(id: any) {
 
             <button
               type="button"
-              class="inline-flex justify-center rounded-md border border-transparent bg-slate-400 px-4 py-2 text-sm font-medium"
+              class="inline-flex justify-center rounded-md border border-transparent bg-slate-300 px-4 py-2 text-sm font-medium"
               @click="openModal(item.id)"
             >
               <CheckIcon class="w-6 h-6 text-white" />
