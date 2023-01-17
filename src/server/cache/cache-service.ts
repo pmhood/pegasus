@@ -12,7 +12,7 @@ export class CacheService {
       console.log(`Cache expired for ${id}: ${expiryDate}`);
       delete this.expiry[id];
     } else if (cacheData) {
-      console.log(`Cache hit for ${id}`);
+      console.log(`Cache hit for ${id}.  Expiry is ${expiryDate}`);
       return this.data[id];
     }
   }
