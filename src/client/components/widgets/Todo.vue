@@ -35,6 +35,8 @@ function openModal(id: any) {
 }
 
 const props = defineProps<TodoWidgetResponseData>();
+const emit = defineEmits(['reload']);
+
 const { items } = toRefs(props);
 
 async function doMarkCompleted(id: any) {
@@ -43,7 +45,7 @@ async function doMarkCompleted(id: any) {
     console.log(`Completed '${item.name}'`);
     try {
       await axios.post(`/api/todo/tasks/${id}/completed`);
-      items.value = items.value.filter((item) => item.id !== id);
+      emit('reload');
     } catch (e) {
       console.warn(`Error completing task: ${id} ${item.name}`);
     }
@@ -52,34 +54,38 @@ async function doMarkCompleted(id: any) {
 </script>
 
 <template>
-  <div class="overflow-auto">
-    <div class="bg-slate-50 p-4 flex flex-col">
-      <div class="text-slate-700 text-lg font-semibold">
-        To Do List ({{ items.length }} items {{ props.items.length }})
+  <div class="overflow-auto h-full bg-slate-50 p-4">
+    <div class="flex flex-col h-full">
+      <div class="text-slate-700 text-lg font-semibold">To Do List</div>
+      <div v-if="items.length > 0">
+        <div
+          :key="item.id"
+          v-for="[index, item] of items.entries()"
+          class="p-2 border-b"
+          :class="[index % 2 === 0 ? 'odd' : 'even']"
+        >
+          <label class="label cursor-pointer">
+            <span class="flex flex-row items-center">
+              <span v-if="item.priority === 4" class="pr-4"
+                ><ExclamationCircleIcon class="w-6 h-6 text-red-500"
+              /></span>
+
+              <span class="label-text">{{ item.name }}</span>
+            </span>
+
+            <button
+              type="button"
+              class="inline-flex justify-center rounded-md border border-transparent bg-slate-400 px-4 py-2 text-sm font-medium"
+              @click="openModal(item.id)"
+            >
+              <CheckIcon class="w-6 h-6 text-white" />
+            </button>
+          </label>
+        </div>
       </div>
-      <div
-        :key="item.id"
-        v-for="[index, item] of items.entries()"
-        class="p-2 border-b"
-        :class="[index % 2 === 0 ? 'odd' : 'even']"
-      >
-        <label class="label cursor-pointer">
-          <span class="flex flex-row items-center">
-            <span v-if="item.priority === 4" class="pr-4"
-              ><ExclamationCircleIcon class="w-6 h-6 text-red-500"
-            /></span>
-
-            <span class="label-text">{{ item.name }}</span>
-          </span>
-
-          <button
-            type="button"
-            class="inline-flex justify-center rounded-md border border-transparent bg-slate-100 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2"
-            @click="openModal(item.id)"
-          >
-            <CheckIcon class="w-6 h-6 text-slate-700" />
-          </button>
-        </label>
+      <div v-else class="h-full justify-center items-center flex flex-col">
+        <div class="text-2xl font-extralight">You did it all!</div>
+        <div class="text-8xl">🚀</div>
       </div>
     </div>
     <TransitionRoot appear :show="isOpen" as="template">
