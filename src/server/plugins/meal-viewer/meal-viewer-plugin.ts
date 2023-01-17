@@ -52,6 +52,9 @@ export class MealViewerPlugin implements CardWidgetDisplayable {
       }
     }
 
+    if (items.length === 0) {
+      items.push(`No lunch today!`);
+    }
     return items;
   }
 
