@@ -42,6 +42,13 @@ onDeactivated(() => {
   clearInterval(intervalId);
   intervalId = null;
 });
+
+async function reloadHandler() {
+  clearInterval(intervalId);
+  intervalId = null;
+
+  await refreshScreen();
+}
 </script>
 
 <template>
@@ -51,6 +58,7 @@ onDeactivated(() => {
       v-bind:is="componentClassFromString(screenResponse.layout)"
       v-bind="screenResponse"
       class="h-full"
+      @reload="reloadHandler()"
     ></component>
     <div class="absolute top-0 right-0 text-white text-xs">
       v{{ screenResponse?.version }}

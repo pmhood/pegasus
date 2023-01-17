@@ -9,6 +9,11 @@ export interface MultiLayoutResponseData {
 }
 
 const props = defineProps<MultiLayoutResponseData>();
+const emit = defineEmits(['reload']);
+
+function reloadHandler() {
+  emit('reload');
+}
 </script>
 
 <template>
@@ -19,6 +24,7 @@ const props = defineProps<MultiLayoutResponseData>();
         v-bind:is="componentClassFromString(props.left.componentName ?? '')"
         v-bind="props.left"
         class="h-full"
+        @reload="reloadHandler()"
       ></component>
     </div>
     <div
@@ -28,6 +34,7 @@ const props = defineProps<MultiLayoutResponseData>();
         class="rounded-md drop-shadow-md bg-gradient-to-b from-blue-500 to-cyan-400"
         v-bind:is="componentClassFromString(props.rightTop.componentName ?? '')"
         v-bind="props.rightTop"
+        @reload="reloadHandler()"
       ></component>
       <div class="h-auto grid gap-2 grid-cols-2">
         <component
@@ -36,6 +43,7 @@ const props = defineProps<MultiLayoutResponseData>();
             componentClassFromString(props.rightBottomLeft.componentName ?? '')
           "
           v-bind="props.rightBottomLeft"
+          @reload="reloadHandler()"
         ></component>
         <component
           class="rounded-md drop-shadow-md"
@@ -43,6 +51,7 @@ const props = defineProps<MultiLayoutResponseData>();
             componentClassFromString(props.rightBottomRight.componentName ?? '')
           "
           v-bind="props.rightBottomRight"
+          @reload="reloadHandler()"
         ></component>
       </div>
     </div>
