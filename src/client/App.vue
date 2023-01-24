@@ -13,7 +13,7 @@ import router from './router';
       <KeepAlive>
         <Suspense>
           <!-- main content -->
-          <component :is="Component" class="w-screen h-screen"></component>
+          <component :is="Component"></component>
 
           <!-- loading state -->
           <template #fallback>

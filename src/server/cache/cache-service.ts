@@ -8,7 +8,7 @@ export class CacheService {
     const expiryDate = this.expiry[id];
     const cacheData = this.data[id];
 
-    if (expiryDate && expiryDate < moment()) {
+    if (!expiryDate || expiryDate < moment()) {
       console.log(`Cache expired for ${id}: ${expiryDate}`);
       delete this.expiry[id];
     } else if (cacheData) {
