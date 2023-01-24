@@ -63,7 +63,7 @@ async function doMarkCompleted(id: any) {
         <div
           :key="item.id"
           v-for="[index, item] of items.entries()"
-          class="p-2 border-b"
+          class="p-2 border-b border-slate-600"
           :class="[index % 2 === 0 ? 'odd' : 'even']"
         >
           <label class="label cursor-pointer">
@@ -77,10 +77,10 @@ async function doMarkCompleted(id: any) {
 
             <button
               type="button"
-              class="inline-flex justify-center rounded-md border border-transparent bg-slate-300 px-4 py-2 text-sm font-medium"
+              class="inline-flex justify-center rounded-full border border-slate-400 bg-slate-300 px-2 py-2 text-sm font-medium"
               @click="openModal(item.id)"
             >
-              <CheckIcon class="w-6 h-6 text-white" />
+              <CheckIcon class="w-6 h-6 text-slate-800" />
             </button>
           </label>
         </div>

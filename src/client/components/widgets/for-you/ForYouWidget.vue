@@ -14,8 +14,8 @@ setInterval(() => {
 }, 1000);
 </script>
 <template>
-  <div class="bg-image bg-cover flex flex-col">
-    <div class="p-10 mt-auto w-full bg-black/5">
+  <div class="flex flex-col">
+    <div class="p-4 mt-auto w-full">
       <div
         class="text-xl font-light text-white [text-shadow:0_4px_8px_rgba(0,0,0,0.8)]"
       >

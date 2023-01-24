@@ -17,8 +17,11 @@ function go() {
 </script>
 
 <template>
-  <div class="cursor-pointer flex flex-row" @click="go()">
-    <div class="flex flex-col basis-4/5 overflow-auto">
+  <div
+    class="h-full cursor-pointer grid grid-cols-3 bg-gradient-to-b from-blue-500 to-cyan-400 overflow-auto"
+    @click="go()"
+  >
+    <div class="col-span-2 overflow-auto">
       <div
         v-for="day in Object.keys(events).sort()"
         :key="day"
@@ -65,8 +68,7 @@ function go() {
         </div>
       </div>
     </div>
-
-    <div class="basis-1/5 h-auto bg-cyan-400/25">
+    <div class="bg-cyan-400/25 col-start-3">
       <Month class=""></Month>
     </div>
   </div>

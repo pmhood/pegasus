@@ -17,36 +17,46 @@ function reloadHandler() {
 </script>
 
 <template>
-  <div class="h-screen w-screen flex flex-row">
-    <div class="basis-2/5 bg-blue-800">
-      <component
-        v-if="props.left !== null"
-        v-bind:is="componentClassFromString(props.left.componentName ?? '')"
-        v-bind="props.left"
-        class="h-full"
-        @reload="reloadHandler()"
-      ></component>
-    </div>
-    <div
-      class="basis-3/5 p-4 h-auto grid gap-2 grid-rows-2 bg-gradient-to-r from-blue-800 to-indigo-900"
-    >
-      <component
-        class="rounded-md drop-shadow-md bg-gradient-to-b from-blue-500 to-cyan-400"
-        v-bind:is="componentClassFromString(props.rightTop.componentName ?? '')"
-        v-bind="props.rightTop"
-        @reload="reloadHandler()"
-      ></component>
-      <div class="h-auto grid gap-2 grid-cols-2">
+  <div class="">
+    <div class="grid grid-cols-3 gap-2 mx-auto grid-rows-[272px_272px] pr-2">
+      <!-- Left Side -->
+      <div class="row-span-2">
         <component
-          class="rounded-md drop-shadow-md"
+          v-if="props.left !== null"
+          v-bind:is="componentClassFromString(props.left.componentName ?? '')"
+          v-bind="props.left"
+          class="h-full"
+          @reload="reloadHandler()"
+        ></component>
+      </div>
+
+      <!-- Right Side -->
+      <!-- Top -->
+      <div class="col-start-2 col-span-2 h-full">
+        <component
+          class="rounded-lg drop-shadow-md"
+          v-bind:is="
+            componentClassFromString(props.rightTop.componentName ?? '')
+          "
+          v-bind="props.rightTop"
+          @reload="reloadHandler()"
+        ></component>
+      </div>
+      <!-- Bottom Left -->
+      <div class="col-start-2 h-full">
+        <component
+          class="rounded-lg drop-shadow-md"
           v-bind:is="
             componentClassFromString(props.rightBottomLeft.componentName ?? '')
           "
           v-bind="props.rightBottomLeft"
           @reload="reloadHandler()"
         ></component>
+      </div>
+      <!-- Bottom Right -->
+      <div class="col-start-3 h-full">
         <component
-          class="rounded-md drop-shadow-md"
+          class="rounded-lg drop-shadow-md"
           v-bind:is="
             componentClassFromString(props.rightBottomRight.componentName ?? '')
           "
