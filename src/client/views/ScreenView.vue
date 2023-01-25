@@ -51,6 +51,10 @@ async function reloadHandler() {
 
   await refreshScreen();
 }
+
+function goToHabitica() {
+  router.push('site');
+}
 </script>
 
 <template>
@@ -68,13 +72,15 @@ async function reloadHandler() {
       <div class="navbar-center"></div>
       <div class="navbar-end divide-x-2">
         <h4 class="p-4">
-          <img
-            alt="Vue logo"
-            class="logo"
-            src="@/assets/habitica.jpg"
-            width="32"
-            height="32"
-          />
+          <button @click="goToHabitica()">
+            <img
+              alt="Vue logo"
+              class="logo"
+              src="@/assets/habitica.jpg"
+              width="32"
+              height="32"
+            />
+          </button>
         </h4>
 
         <h4 class="text-slate-600 p-4">
