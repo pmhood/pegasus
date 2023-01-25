@@ -15,12 +15,12 @@ const router = createRouter({
     },
     {
       path: '/site',
-      redirect: () => {
-        window.location.href = 'https://habitica.starporthorizon.com/login';
-        return '/site';
-      },
-      name: 'site'
-      // component: () => import('../views/ExternalSiteView.vue')
+      // redirect: () => {
+      //   window.location.href = 'https://habitica.starporthorizon.com/login';
+      //   return '/site';
+      // },
+      name: 'site',
+      component: () => import('../views/ExternalSiteView.vue')
     }
   ]
 });
