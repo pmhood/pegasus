@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { XMarkIcon } from '@heroicons/vue/24/solid';
-import { onMounted } from 'vue';
 import router from '../router';
 import { ref } from 'vue';
 
 const iframe: any = ref(null);
+const frameSrc = ref('https://habitica.starporthorizon.com/login');
 
 function close() {
-  router.back();
+  const historyLength = window.history.length - 1;
+  for (let i = 0; i < historyLength - 1; ++i) {
+    router.go(-1);
+  }
 }
-
-onMounted(() => {
-  console.log(iframe.value);
-});
 </script>
 
 <template>
@@ -31,11 +30,7 @@ onMounted(() => {
       <div class="navbar-end divide-x-2"></div>
     </header>
     <main class="h-full">
-      <iframe
-        ref="iframe"
-        src="https://habitica.starporthorizon.com/login"
-        class="h-full w-full"
-      ></iframe>
+      <iframe class="h-full w-full" ref="iframe" :src="frameSrc"></iframe>
     </main>
   </div>
 </template>
