@@ -52,7 +52,7 @@ async function reloadHandler() {
   await refreshScreen();
 }
 
-function goToHabitica() {
+function goToMealie() {
   router.push('site');
 }
 </script>
@@ -72,11 +72,11 @@ function goToHabitica() {
       <div class="navbar-center"></div>
       <div class="navbar-end divide-x-2">
         <h4 class="p-4">
-          <button @click="goToHabitica()">
+          <button @click="goToMealie()">
             <img
-              alt="Vue logo"
+              alt="Mealie"
               class="logo"
-              src="@/assets/habitica.jpg"
+              src="@/assets/mealie.png"
               width="32"
               height="32"
             />

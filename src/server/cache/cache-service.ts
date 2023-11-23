@@ -1,5 +1,8 @@
 import * as moment from 'moment';
 
+/**
+ * In-memory cache
+ */
 export class CacheService {
   private data: { [id: string]: any } = {};
   private expiry: { [id: string]: moment.Moment | undefined } = {};

@@ -4,7 +4,7 @@ import router from '../router';
 import { ref } from 'vue';
 
 const iframe: any = ref(null);
-const frameSrc = ref('https://habitica.starporthorizon.com/login');
+const frameSrc = ref('https://mealie.fakerainbow.com');
 
 function close() {
   const historyLength = window.history.length - 1;
