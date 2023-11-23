@@ -77,13 +77,17 @@ export class PexelsSource implements PhotoSource {
     }
 
     const pexelPhotos = (response as any).media as pexels.Photo[];
-    const photoItems = pexelPhotos.map((photo) => {
-      return {
-        url: photo.src.large2x,
-        photographer: photo.photographer,
-        title: photo.alt
-      } as PhotoItem;
-    });
+    const photoItems = pexelPhotos
+      .filter((photo) => {
+        return photo.width > photo.height;
+      })
+      .map((photo) => {
+        return {
+          url: photo.src.large2x,
+          photographer: photo.photographer,
+          title: photo.alt
+        } as PhotoItem;
+      });
 
     return photoItems;
   }

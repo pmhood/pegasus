@@ -9,6 +9,7 @@ import { InformationCircleIcon } from '@heroicons/vue/24/outline';
 
 let screenResponse = ref<ScreenResponseData>();
 let intervalId: any;
+const imageUrl = ref();
 
 await refreshScreen();
 
@@ -27,6 +28,9 @@ async function refreshScreen() {
   } else {
     console.warn(`No refresh interval found`);
   }
+
+  imageUrl.value = `url('${screenResponse.value?.backgroundUrl}')`;
+  // imageUrl.value = `url('https://images.pexels.com/photos/5137655/pexels-photo-5137655.jpeg?auto=compress&cs=tinysrgb&h=650&w=940')`;
 }
 
 onMounted(() => {
@@ -58,9 +62,7 @@ function goToMealie() {
 </script>
 
 <template>
-  <div
-    class="w-screen h-screen grid grid-rows-[64px] background bg-blend-screen bg-slate-400"
-  >
+  <div class="w-screen h-screen grid grid-rows-[64px] background">
     <header class="navbar bg-slate-100 border-b-1 border-slate-500 h-16">
       <div class="navbar-start divide-x-2 divde-black">
         <button class="px-4">
@@ -102,6 +104,7 @@ function goToMealie() {
 <style scoped>
 .background {
   @apply bg-cover;
-  background-image: url('/images/hans-peter-traunig-MwNu9o6u9Gk-unsplash.jpg');
+  /* background-image: url('/images/hans-peter-traunig-MwNu9o6u9Gk-unsplash.jpg'); */
+  background-image: v-bind(imageUrl);
 }
 </style>
