@@ -15,7 +15,7 @@ setInterval(() => {
 </script>
 <template>
   <div class="flex flex-col">
-    <div class="p-4 mt-auto w-full">
+    <div class="p-4 mt-auto w-full z-10">
       <div
         class="text-xl font-light text-white [text-shadow:0_4px_8px_rgba(0,0,0,0.8)]"
       >
