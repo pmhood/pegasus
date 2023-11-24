@@ -17,7 +17,7 @@ const imageUrl = ref(`url('${props.imageUrl}')`);
 <template>
   <div
     v-if="props.type === CardWidgetType.ImageWithText"
-    class="bg-cover bg-center bg-image flex flex-col h-full bg-gradient-to-br from-emerald-700 to-emerald-50"
+    class="bg-cover bg-center bg-image flex flex-col h-full backdrop-blur-lg bg-emerald-700/25"
   >
     <div
       v-if="props.title"
@@ -29,7 +29,7 @@ const imageUrl = ref(`url('${props.imageUrl}')`);
 
   <div
     v-else-if="props.type === CardWidgetType.TextOverlay"
-    class="flex flex-col h-full w-full text-xl bg-gradient-to-br from-emerald-700 to-emerald-50 p-4 text-white [text-shadow:0_4px_8px_rgba(0,0,0,0.8)] justify-center items-center"
+    class="flex flex-col h-full w-full text-xl backdrop-blur-md bg-emerald-700/25 p-4 text-white [text-shadow:0_4px_8px_rgba(0,0,0,0.8)] justify-center items-center"
   >
     {{ props.title }}
   </div>

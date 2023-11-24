@@ -54,25 +54,23 @@ async function doMarkCompleted(id: any) {
 </script>
 
 <template>
-  <div
-    class="overflow-auto h-full bg-gradient-to-br from-slate-50 via-slate-100 to-slate-500 p-4"
-  >
+  <div class="overflow-auto h-full backdrop-blur-md bg-orange-600/30 p-4">
     <div class="flex flex-col h-full">
-      <div class="text-slate-700 text-lg font-semibold">To Do List</div>
+      <div class="text-white text-lg font-semibold">To Do List</div>
       <div v-if="items.length > 0">
         <div
           :key="item.id"
           v-for="[index, item] of items.entries()"
-          class="p-2 border-b border-slate-600"
+          class="p-2 border-b border-white/50"
           :class="[index % 2 === 0 ? 'odd' : 'even']"
         >
-          <label class="label cursor-pointer">
+          <label class="label cursor-pointer space-x-2">
             <span class="flex flex-row items-center">
               <span v-if="item.priority === 4" class="pr-4"
                 ><ExclamationCircleIcon class="w-6 h-6 text-red-500"
               /></span>
 
-              <span class="label-text">{{ item.name }}</span>
+              <span class="label-text text-white/50">{{ item.name }} </span>
             </span>
 
             <button
@@ -80,7 +78,7 @@ async function doMarkCompleted(id: any) {
               class="inline-flex justify-center rounded-full border border-slate-400 bg-slate-300 px-2 py-2 text-sm font-medium"
               @click="openModal(item.id)"
             >
-              <CheckIcon class="w-6 h-6 text-slate-800" />
+              <CheckIcon class="w-6 h-6 text-slate-900" />
             </button>
           </label>
         </div>
