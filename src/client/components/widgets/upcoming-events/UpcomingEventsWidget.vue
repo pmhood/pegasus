@@ -18,7 +18,7 @@ function go() {
 
 <template>
   <div
-    class="h-full cursor-pointer grid grid-cols-3 bg-gradient-to-b from-blue-500 to-cyan-400 overflow-auto"
+    class="h-full cursor-pointer grid grid-cols-3 backdrop-blur-md bg-blue-600/25 overflow-auto"
     @click="go()"
   >
     <div class="col-span-2 overflow-auto">
