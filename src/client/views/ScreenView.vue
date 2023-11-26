@@ -65,7 +65,9 @@ function goToMealie() {
   <div
     class="w-screen h-screen grid grid-rows-[64px] background backdrop-blur-sm"
   >
-    <div class="absolute inset-0 w-full h-full bg-slate-900/50"></div>
+    <div
+      class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-slate-900/50"
+    ></div>
     <header
       class="navbar border-b-1 border-slate-500 h-16 bg-gradient-to-b from-slate-900/40 to-slate-900/0"
     >

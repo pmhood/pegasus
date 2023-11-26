@@ -9,7 +9,7 @@ const props = defineProps<InternalSingleLayoutResponseData>();
 </script>
 
 <template>
-  <div class="w-screen flex flex-row">
+  <div class="w-screen flex flex-row h-full p-4">
     <component
       v-if="props !== null"
       v-bind:is="componentClassFromString(props.main.componentName)"
