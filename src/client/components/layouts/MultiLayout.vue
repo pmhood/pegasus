@@ -17,8 +17,9 @@ function reloadHandler() {
 </script>
 
 <template>
-  <!-- <div class=""> -->
-  <div class="grid grid-cols-3 gap-2 mx-auto grid-rows-[272px_272px]">
+  <div
+    class="w-screen p-4 grid grid-cols-3 gap-2 mx-auto grid-rows-[272px_272px]"
+  >
     <!-- Left Side -->
     <div class="row-span-2">
       <component
@@ -63,5 +64,4 @@ function reloadHandler() {
       ></component>
     </div>
   </div>
-  <!-- </div> -->
 </template>

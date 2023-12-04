@@ -3,7 +3,7 @@ import router from '@/router';
 import moment from 'moment';
 import type { BucketedEvents } from 'src/common/dto/home-screen-response';
 import { toRefs } from 'vue';
-import Month from '../../Month.vue';
+import MonthItem from '../../MonthItem.vue';
 
 export interface UpcomingEventsWidgetDataInternal {
   events: BucketedEvents;
@@ -69,7 +69,7 @@ function go() {
       </div>
     </div>
     <div class="bg-cyan-400/25 col-start-3">
-      <Month class=""></Month>
+      <MonthItem class=""></MonthItem>
     </div>
   </div>
 </template>

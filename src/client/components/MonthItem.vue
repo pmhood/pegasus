@@ -20,7 +20,10 @@ onUnmounted(() => {
 function refreshCalendar() {
   today.value = moment();
   const startWeek = today.value.clone().startOf('month').week();
-  const endWeek = today.value.clone().endOf('month').startOf('day').week();
+  let endWeek = today.value.clone().endOf('month').startOf('day').week();
+  if (endWeek < startWeek) {
+    endWeek += 52;
+  }
   numWeeks.value = endWeek - startWeek + 1;
 
   calendarDates.value = [];
