@@ -59,7 +59,7 @@ async function reloadHandler() {
 
 function goToMealie() {
   // router.push('site');
-  window.open('https://mealie.fakerainbow.com');
+  window.open('https://mealie.fakerainbow.com', '_self');
 }
 
 const htmlRefHook = ref<HTMLElement | null>(null);
