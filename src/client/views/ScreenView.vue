@@ -58,7 +58,8 @@ async function reloadHandler() {
 }
 
 function goToMealie() {
-  router.push('site');
+  // router.push('site');
+  window.open('https://mealie.fakerainbow.com', '_blank');
 }
 
 const htmlRefHook = ref<HTMLElement | null>(null);
@@ -102,9 +103,26 @@ onLongPress(htmlRefHook, onLongPressCallbackHook, {
   </div>
 
   <dialog id="my_modal_2" class="modal" ref="modalRef">
-    <div class="modal-box">
+    <div class="modal-box bg-white">
       <h3 class="font-bold text-lg">Hello!</h3>
-      <p class="py-4">Press ESC key or click outside to close</p>
+      <div class="divide-x-2">
+        <h4 class="p-4">
+          <button class="p-4 bg-black rounded-md" @click="goToMealie()">
+            <img
+              alt="Mealie"
+              class="logo bg-blend-screen"
+              src="@/assets/mealie_white.png"
+              width="32"
+              height="32"
+            />
+          </button>
+        </h4>
+
+        <!-- <h4 class="text-slate-600 p-4">
+          <InformationCircleIcon class="h-8 text-slate-800" />
+        </h4> -->
+      </div>
+      <!-- <p class="py-4">Press ESC key or click outside to close</p> -->
     </div>
     <form method="dialog" class="modal-backdrop">
       <button>close</button>
