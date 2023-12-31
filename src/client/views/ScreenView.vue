@@ -6,6 +6,7 @@ import { ref, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue';
 import router from '../router';
 import { HomeIcon } from '@heroicons/vue/24/solid';
 import { InformationCircleIcon } from '@heroicons/vue/24/outline';
+import { onLongPress } from '@vueuse/core';
 
 let screenResponse = ref<ScreenResponseData>();
 let intervalId: any;
@@ -59,45 +60,38 @@ async function reloadHandler() {
 function goToMealie() {
   router.push('site');
 }
+
+const htmlRefHook = ref<HTMLElement | null>(null);
+const modalRef = ref<any | null>(null);
+const longPressedHook = ref(false);
+
+function onLongPressCallbackHook(e: PointerEvent) {
+  longPressedHook.value = true;
+  console.log(`long press`);
+  modalRef.value?.showModal();
+}
+function resetHook() {
+  longPressedHook.value = false;
+}
+
+onLongPress(htmlRefHook, onLongPressCallbackHook, {
+  modifiers: {
+    prevent: true
+  }
+});
 </script>
 
 <template>
+  <!-- <button class="btn" onclick="my_modal_2.showModal()">open modal</button> -->
   <div
     class="w-screen h-screen grid grid-rows-[64px] background backdrop-blur-sm"
+    ref="htmlRefHook"
   >
     <div
       class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-slate-900/50"
     ></div>
-    <header
-      class="navbar border-b-1 border-slate-500 h-16 bg-gradient-to-b from-slate-900/40 to-slate-900/0"
-    >
-      <div class="navbar-start divide-x-2 divde-black">
-        <button class="p-4">
-          <HomeIcon class="h-6 w-6 text-white" />
-        </button>
 
-        <h3 class="font-semibold px-4"></h3>
-      </div>
-      <div class="navbar-center"></div>
-      <div class="navbar-end divide-x-2">
-        <h4 class="p-4">
-          <button class="p-4" @click="goToMealie()">
-            <img
-              alt="Mealie"
-              class="logo bg-blend-screen"
-              src="@/assets/mealie_white.png"
-              width="32"
-              height="32"
-            />
-          </button>
-        </h4>
-
-        <!-- <h4 class="text-slate-600 p-4">
-          <InformationCircleIcon class="h-8 text-slate-800" />
-        </h4> -->
-      </div>
-    </header>
-    <main class="h-[576px] flex items-center">
+    <main class="h-screen flex items-center">
       <component
         v-if="screenResponse"
         v-bind:is="componentClassFromString(screenResponse.layout)"
@@ -106,6 +100,16 @@ function goToMealie() {
       ></component>
     </main>
   </div>
+
+  <dialog id="my_modal_2" class="modal" ref="modalRef">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">Hello!</h3>
+      <p class="py-4">Press ESC key or click outside to close</p>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
 </template>
 
 <style scoped>
