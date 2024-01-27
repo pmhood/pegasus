@@ -14,7 +14,7 @@ export class ScreenController {
 
     const pexels = new PexelsSource();
     const items = await pexels.fetchItems({
-      collectionId: 'zutst5p',
+      collectionId: 'oic4min',
       limit: 10
     });
     const randomItem = randomElement(items);
