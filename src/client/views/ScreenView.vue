@@ -88,9 +88,7 @@ onLongPress(htmlRefHook, onLongPressCallbackHook, {
     class="w-screen h-screen grid grid-rows-[64px] background backdrop-blur-sm"
     ref="htmlRefHook"
   >
-    <div
-      class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-slate-900/50"
-    ></div>
+    <div class="absolute inset-x-0 bottom-0 h-48"></div>
 
     <main class="h-screen flex items-center">
       <component
