@@ -15,7 +15,7 @@ export class CalendarIcalSource implements CalendarSource {
     try {
       // const response = await axios.get(url);
       const startOfMonth = moment().startOf('month');
-      const endOfMonth = moment().endOf('month');
+      const endOfMonth = moment().add(3, 'M').endOf('month');
 
       const items = await ical.async.fromURL(url);
       const icalEvents = Object.values(items).filter((event: any) => {
