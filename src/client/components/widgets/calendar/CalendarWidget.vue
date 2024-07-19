@@ -110,7 +110,23 @@ const scheduleCalendarOptions: CalendarOptions = {
     },
     schedule: {
       type: 'listWeek',
-      duration: { days: 7 }
+      duration: { days: 7 },
+      eventDidMount: function (info) {
+        // Change background color of row
+        // info.el.cl = info.event.classNames;
+        const colorClass = getPersonCssClasses(info.event.title).replace(
+          '100',
+          '50'
+        );
+        info.el.className += ` ${colorClass} `;
+
+        const dotEl = info.el.getElementsByClassName('fc-list-event-dot')[0];
+        if (dotEl) {
+          console.log(dotEl);
+          dotEl.className = '';
+        }
+        // }
+      }
     }
   },
   scrollTime: moment().subtract(1, 'h').format('HH:MM:00'),
@@ -130,7 +146,7 @@ const scheduleCalendarOptions: CalendarOptions = {
   eventContent: (arg: EventContentArg) => {
     let personCssClasses = getPersonCssClasses(arg.event.title); //arg.event.extendedProps.sourceColor;
     let borderClass = personCssClasses
-      .replace('100', '300')
+      .replace('100', '500')
       .replace('bg', 'border-l');
     let textColorClass = 'text-black';
 
@@ -203,6 +219,10 @@ onMounted(() => {
   }
 });
 
+/**
+ *
+ * @param title
+ */
 function getPersonCssClasses(title: string): string {
   const classes: string[] = [];
   if (title.indexOf('Girls') >= 0) {

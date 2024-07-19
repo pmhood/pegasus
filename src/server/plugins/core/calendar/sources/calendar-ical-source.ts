@@ -81,8 +81,7 @@ export class CalendarIcalSource implements CalendarSource {
             start: event.start.toISOString(),
             end: event.end.toISOString(),
             allDay: event.datetype === 'date',
-            sourceId,
-            backgroundColor: 'green'
+            sourceId
           } as FullCalendarEvent;
 
           // if (event.rrule) {
