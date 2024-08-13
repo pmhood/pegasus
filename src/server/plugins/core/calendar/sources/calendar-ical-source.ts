@@ -22,15 +22,12 @@ export class CalendarIcalSource implements CalendarSource {
         const startDate = moment(event.start);
         const endDate = moment(event.end);
         const success = startDate >= startOfMonth && endDate <= endOfMonth;
-        return success && event.type === 'VEVENT';
+        return (success && event.type === 'VEVENT') || event.rrule;
       }) as any[];
 
       // console.log(icalEvents);
       for (const event of icalEvents) {
-        // if (event.type === 'VEVENT') {
         if (event.rrule) {
-          console.log('Recurring event:', event.summary);
-          // processRecurringEvent(event);
           const rule = event.rrule;
           // Generate occurrences of the recurring event
           const dates = rule.between(
@@ -41,28 +38,9 @@ export class CalendarIcalSource implements CalendarSource {
             moment(event.start),
             'minutes'
           );
-          console.log(`Duration: ${duration}`);
-          console.log('Occurrences:', dates);
           dates.forEach((date) => {
-            // let newDate;
-            // if (event.rrule.origOptions.tzid) {
-            //   // tzid present (calculate offset from recurrence start)
-            //   const dateTimezone = moment.tz.zone('UTC');
-            //   const localTimezone = moment.tz.guess();
-            //   const tz = event.rrule.origOptions.tzid === localTimezone ? event.rrule.origOptions.tzid : localTimezone;
-            //   const timezone = moment.tz.zone(tz);
-            //   const offset = timezone.utcOffset(date) - dateTimezone.utcOffset(date);
-            //   newDate = moment(date).add(offset, 'minutes').toDate();
-            // } else {
-            //   // tzid not present (calculate offset from original start)
-            //   newDate = new Date(
-            //     date.setHours(date.getHours() - (event.start.getTimezoneOffset() - date.getTimezoneOffset()) / 60)
-            //   );
-            // }
             const start = moment(date);
             const end = moment(start).add(duration, 'minutes');
-            console.log('Recurrence start:', start);
-            console.log('Recurrence end:', end);
             events.push({
               id: event.uid,
               title: event.summary,
@@ -83,14 +61,8 @@ export class CalendarIcalSource implements CalendarSource {
             allDay: event.datetype === 'date',
             sourceId
           } as FullCalendarEvent;
-
-          // if (event.rrule) {
-          //   item.startRecur = event.start.toISOString();
-          // }
-
           events.push(item);
         }
-        // }
       }
     } catch (err) {
       console.error(err);
