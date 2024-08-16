@@ -38,7 +38,17 @@ export class CalendarIcalSource implements CalendarSource {
             moment(event.start),
             'minutes'
           );
+
           dates.forEach((date) => {
+            // https://github.com/peterbraden/ical.js/blob/master/example_rrule.js
+            const dateLookupKey = date.toISOString().substring(0, 10);
+            if (
+              event.exdate != undefined &&
+              event.exdate[dateLookupKey] != undefined
+            ) {
+              // This date is an exception date, which means we should skip it in the recurrence pattern.
+              return;
+            }
             const start = moment(date);
             const end = moment(start).add(duration, 'minutes');
             events.push({
