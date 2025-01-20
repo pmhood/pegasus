@@ -2,13 +2,12 @@ import * as ical from 'node-ical';
 import { FullCalendarEvent } from '../../../../../common/dto/full-calendar-event';
 import { CalendarSource } from '../calendar-source';
 import * as moment from 'moment';
-// import { rrulestr, RRuleSet } from 'rrule';
-// import axios from 'axios';
 
 export class CalendarIcalSource implements CalendarSource {
   public async getEvents(
     sourceId: string,
-    url: string
+    url: string,
+    titlePrefix: string = ''
   ): Promise<FullCalendarEvent[]> {
     const events: FullCalendarEvent[] = [];
 
@@ -53,7 +52,7 @@ export class CalendarIcalSource implements CalendarSource {
             const end = moment(start).add(duration, 'minutes');
             events.push({
               id: event.uid,
-              title: event.summary,
+              title: `${titlePrefix} ${event.summary}`,
               description: event.description,
               start: start.toISOString(),
               end: end.toISOString(),
@@ -64,7 +63,7 @@ export class CalendarIcalSource implements CalendarSource {
         } else {
           const item = {
             id: event.uid,
-            title: event.summary,
+            title: `${titlePrefix} ${event.summary}`,
             description: event.description,
             start: event.start.toISOString(),
             end: event.end.toISOString(),

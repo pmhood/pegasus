@@ -1,30 +1,27 @@
 <script setup lang="ts">
 // import '@fullcalendar/core/vdom'; // solves problem with Vite
-import FullCalendar from '@fullcalendar/vue3';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import rrulePlugin from '@fullcalendar/rrule';
-import listPlugin from '@fullcalendar/list';
-import iCalendarPlugin from '@fullcalendar/icalendar';
-import interactionPlugin from '@fullcalendar/interaction';
-import type { CalendarOptions, EventClickArg } from '@fullcalendar/core';
-import { onMounted, ref } from 'vue';
-import type { CalendarApi, EventContentArg } from '@fullcalendar/core';
-import axios from 'axios';
-import moment from 'moment';
-
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronDownIcon,
-  CalendarDaysIcon
-} from '@heroicons/vue/24/solid';
-import { BackwardIcon, ForwardIcon } from '@heroicons/vue/24/outline';
-import { useRouter } from 'vue-router';
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
 import router from '@/router';
-import type { CalendarScreenResponse } from 'src/common/dto/calendar-screen-response';
+import type {
+  CalendarApi,
+  CalendarOptions,
+  EventClickArg,
+  EventContentArg
+} from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import listPlugin from '@fullcalendar/list';
+import rrulePlugin from '@fullcalendar/rrule';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import FullCalendar from '@fullcalendar/vue3';
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import {
+  CalendarDaysIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon
+} from '@heroicons/vue/24/solid';
+import moment from 'moment';
 import type { FullCalendarEvent } from 'src/common/dto/full-calendar-event';
+import { onMounted, ref } from 'vue';
 
 export interface InternalCalendarWidgetResponseData {
   componentName: string;
@@ -50,7 +47,14 @@ const viewTypeDropdownItems = [
   ViewType.Schedule
 ];
 
+const eventSources = ref<Set<string>>(
+  new Set<string>(['holidays', 'hoodfamily'])
+);
+
 const props = defineProps<InternalCalendarWidgetResponseData>();
+let currentEvents = props.events.filter((event) =>
+  eventSources.value.has(event.sourceId || '')
+);
 
 const calendar = ref<any>(null);
 let calendarApi: CalendarApi | undefined = undefined;
@@ -114,10 +118,10 @@ const scheduleCalendarOptions: CalendarOptions = {
       eventDidMount: function (info) {
         // Change background color of row
         // info.el.cl = info.event.classNames;
-        const colorClass = getPersonCssClasses(info.event.title).replace(
-          '100',
-          '50'
-        );
+        const colorClass = getPersonCssClasses(
+          info.event.title,
+          info.event.extendedProps.sourceId
+        ).replace('100', '50');
         info.el.className += ` ${colorClass} `;
 
         const dotEl = info.el.getElementsByClassName('fc-list-event-dot')[0];
@@ -131,7 +135,7 @@ const scheduleCalendarOptions: CalendarOptions = {
   },
   scrollTime: moment().subtract(1, 'h').format('HH:MM:00'),
   height: '100%',
-  events: props.events,
+  events: currentEvents,
   // eventTimeFormat: {
   //   hour: 'numeric',
   //   minute: '2-digit',
@@ -144,7 +148,11 @@ const scheduleCalendarOptions: CalendarOptions = {
     return moment(arg.date).format('h a');
   },
   eventContent: (arg: EventContentArg) => {
-    let personCssClasses = getPersonCssClasses(arg.event.title); //arg.event.extendedProps.sourceColor;
+    console.log(arg);
+    let personCssClasses = getPersonCssClasses(
+      arg.event.title,
+      arg.event.extendedProps.sourceId
+    ); //arg.event.extendedProps.sourceColor;
     let borderClass = personCssClasses
       .replace('100', '500')
       .replace('bg', 'border-l');
@@ -223,8 +231,9 @@ onMounted(() => {
  *
  * @param title
  */
-function getPersonCssClasses(title: string): string {
+function getPersonCssClasses(title: string, sourceId: string): string {
   const classes: string[] = [];
+  console.log(sourceId);
   if (title.indexOf('Girls') >= 0) {
     classes.push('bg-rose-100');
   }
@@ -242,6 +251,9 @@ function getPersonCssClasses(title: string): string {
   }
   if (title.indexOf('Pete') >= 0) {
     classes.push('bg-teal-100');
+  }
+  if (sourceId === 'mealviewer') {
+    classes.push('bg-green-100');
   }
 
   if (classes.length === 0) {
@@ -280,6 +292,21 @@ function setView(type: ViewType) {
   console.log(type);
   viewType = type;
   calendarApi?.changeView(fullCalendarType[viewType]);
+}
+
+function toggleSource(sourceId: string) {
+  const sources = eventSources.value;
+  if (sources.has(sourceId)) {
+    sources.delete(sourceId);
+  } else {
+    sources.add(sourceId);
+  }
+  console.log(`Event Sources: ${JSON.stringify(eventSources)}`);
+  currentEvents = props.events.filter((event) =>
+    sources.has(event.sourceId || '')
+  );
+  calendarApi?.removeAllEvents();
+  calendarApi?.addEventSource(currentEvents);
 }
 </script>
 
@@ -365,6 +392,36 @@ function setView(type: ViewType) {
           </div>
         </div>
       </div>
+      <div class="p-2 flex flex-row gap-4">
+        <button
+          @click="toggleSource('hoodfamily')"
+          :class="[
+            eventSources.has('hoodfamily') ? 'btn-active' : '',
+            '          btn btn-outline btn-primary btn-sm'
+          ]"
+        >
+          Hood Family
+        </button>
+        <button
+          :class="[
+            eventSources.has('myers_canvas') ? 'btn-active' : '',
+            '          btn btn-outline btn-primary btn-sm'
+          ]"
+          @click="toggleSource('myers_canvas')"
+        >
+          Myers Canvas
+        </button>
+        <button
+          :class="[
+            eventSources.has('mealviewer') ? 'btn-active' : '',
+            '          btn btn-outline btn-primary btn-sm'
+          ]"
+          @click="toggleSource('mealviewer')"
+        >
+          Summerlake Meals
+        </button>
+      </div>
+
       <FullCalendar
         class="calendar"
         ref="calendar"

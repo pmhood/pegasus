@@ -11,5 +11,6 @@ interface CalendarSource {
 
 export enum CalendarSourceType {
   Ical = 'ical',
-  Json = 'json'
+  Json = 'json',
+  Mealviewer = 'mealviewer'
 }

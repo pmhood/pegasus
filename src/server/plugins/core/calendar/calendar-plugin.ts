@@ -12,6 +12,7 @@ import { CalendarSource } from './calendar-source';
 import { BucketedEvents } from '../../../../common/dto/home-screen-response';
 import { CalendarWidgetDisplayable } from '../../../widgets/calendar/calendar-widget-displayable';
 import { CalendarWidgetResponseData } from '../../../widgets/calendar/calendar-widget-response-data';
+import { CalendarMealviewerSource } from './sources/calendar-mealviewer-source';
 
 export class CalendarPlugin
   implements UpcomingEventsWidgetDisplayable, CalendarWidgetDisplayable
@@ -27,7 +28,8 @@ export class CalendarPlugin
   ) {
     this.cacheKeyPrefix = `${CalendarPlugin.id}-`;
     this.sources = {
-      [CalendarSourceType.Ical]: new CalendarIcalSource()
+      [CalendarSourceType.Ical]: new CalendarIcalSource(),
+      [CalendarSourceType.Mealviewer]: new CalendarMealviewerSource()
     };
   }
 
@@ -72,7 +74,8 @@ export class CalendarPlugin
         console.log(`No cache found for: ${cacheKey}`);
         events = await this.sources[source.type]?.getEvents(
           source.id,
-          source.url
+          source.url,
+          source['titlePrefix']
         );
 
         await this.cacheService.set(cacheKey, events, source.cacheTtl);
